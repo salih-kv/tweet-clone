@@ -1,4 +1,4 @@
-const Form = () => {
+const SignUp = () => {
   return (
     <div>
       <form>
@@ -24,4 +24,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SignUp;
