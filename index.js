@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
-import formData from "./model/formData.js";
+
+import usersRoutes from "./routes/users.js";
+import signupRoutes from "./routes/signup.js";
+
 const app = express();
 const port = 3000;
 
@@ -16,25 +19,7 @@ mongoose
     console.log("Error: ", err.message);
   });
 
-app.post("/signup", async (req, res) => {
-  try {
-    let { fname, lname, email, password } = req.body;
-    const user = await formData.create({ fname, lname, email, password });
-    res.json(user);
-  } catch {
-    console.log(err);
-    res.json({ error: err.message });
-  }
-});
-
-app.get("/users", async (req, res) => {
-  try {
-    const users = await formData.find();
-    res.json(users);
-  } catch (err) {
-    console.log(err);
-    res.json({ error: err.message });
-  }
-});
+app.use("/signup", signupRoutes);
+app.use("/users", usersRoutes);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
