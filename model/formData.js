@@ -11,7 +11,7 @@ const form_data = Schema({
     required: true,
   },
   password: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
