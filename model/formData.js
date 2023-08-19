@@ -5,7 +5,10 @@ const form_data = Schema({
     type: String,
     required: [true, "First Name is required"],
   },
-  lname: String,
+  lname: {
+    type:String,
+    required:true
+  },
   email: {
     type: String,
     required: true,
@@ -16,6 +19,6 @@ const form_data = Schema({
   },
 });
 
-const formData = model("users", form_data); // users is collection name
+const formData = model("users", form_data); // users is the collection name
 
 export default formData;
