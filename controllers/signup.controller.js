@@ -1,16 +1,14 @@
-import formData from "../model/formData.js";
 import bcrypt from "bcrypt";
+import User from "../model/user.model.js";
 
 export const createUser = async (req, res) => {
+  const { fname, lname, username, password } = req.body;
   try {
-    let { fname, lname, email, password } = req.body;
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await formData.create({
+    const user = await User.create({
       fname,
       lname,
-      email,
+      username,
       password: hashedPassword,
     });
   } catch (err) {
