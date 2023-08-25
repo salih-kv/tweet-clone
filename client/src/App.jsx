@@ -11,6 +11,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        {/* if jwt present then only make access to this route */}
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
