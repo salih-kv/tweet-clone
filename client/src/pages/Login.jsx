@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import instance from "../axios/axios";
 import { Input } from "../components/Input.jsx";
-
+import Cookies from 'js-cookie'; 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -24,7 +24,7 @@ const Login = () => {
     try {
       await instance
         .post("/login", formData)
-        .then((res) => res.data.status && navigate("/profile"))
+        .then((res) =>{console.log(res)} )
         .catch((err) => console.log(err));
     } catch (err) {
       console.log("Error: ", err.message);
