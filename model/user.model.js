@@ -1,14 +1,17 @@
 import { Schema, model } from "mongoose";
 
-const form_data = Schema({
+const userSchema = Schema({
   fname: {
     type: String,
     required: [true, "First Name is required"],
   },
-  lname: String,
-  email: {
+  lname: {
+    type: String,
+  },
+  username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -16,6 +19,6 @@ const form_data = Schema({
   },
 });
 
-const formData = model("users", form_data); // users is collection name
+const User = model("User", userSchema); // users is the collection name
 
-export default formData;
+export default User;
