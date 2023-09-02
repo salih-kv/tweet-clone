@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 
 const useAuth =()=>{
-    const user = {loggedIn:false};
+    const user = {loggedIn:true};
     return user && user.loggedIn;
 }
 
