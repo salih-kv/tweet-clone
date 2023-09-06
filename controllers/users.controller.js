@@ -12,7 +12,7 @@ export const getUsers = async (req, res) => {
 
 
 export const updateUsers = async (req, res) => {
-  const token = req.headers['x-access-token']
+  const token =  BearerParser.parseBearerToken(req.headers);
   const { userId,userInfo } = req.body
 try {
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -21,6 +21,8 @@ try {
   // validUser.username = validUser
   // validUser.roles = roles
   // validUser.active = active
+
+  // validUser.save()
   res.status(200).json({
     errorcode: 0,
     status: true,

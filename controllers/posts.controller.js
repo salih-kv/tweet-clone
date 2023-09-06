@@ -1,7 +1,9 @@
 
+import jwt from "jsonwebtoken";
+import {BearerParser} from 'bearer-token-parser';
 
 export const getTweets = async (req, res) => {
-    const token = req.headers['x-access-token']
+  const token =  BearerParser.parseBearerToken(req.headers);
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
 	
@@ -25,7 +27,7 @@ export const getTweets = async (req, res) => {
 };
 
 export const createNewTweet = async (req, res) => {
-    const token = req.headers['x-access-token']
+    const token =  BearerParser.parseBearerToken(req.headers);
     const { userTweet } = req.body
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -50,7 +52,7 @@ export const createNewTweet = async (req, res) => {
 };
 
 export const updateTweet = async (req, res) => {
-    const token = req.headers['x-access-token']
+    const token =  BearerParser.parseBearerToken(req.headers);
     const { tweetId,userTweet } = req.body
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -75,7 +77,7 @@ export const updateTweet = async (req, res) => {
 };
 
 export const deleteTweet = async (req, res) => {
-    const token = req.headers['x-access-token']
+    const token =  BearerParser.parseBearerToken(req.headers);
     const { id } = req.body
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -99,9 +101,3 @@ export const deleteTweet = async (req, res) => {
   }
 };
 
-module.exports = {
-    getTweets,
-    createNewTweet,
-    updateTweet,
-    deleteTweet
-}
