@@ -25,12 +25,13 @@ export const loginUser = async (req, res) => {
       });
       
     const token=createToken(validUser._id);  
-    res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000}); 
+    // res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000}); 
     res.status(200).json({
       errorcode: 0,
       status: true,
       message: "login successfully",
       data: validUser,
+      token:token
     });
   } catch (error) {
     console.log(error.message);

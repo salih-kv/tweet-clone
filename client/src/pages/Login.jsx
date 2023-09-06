@@ -24,7 +24,11 @@ const Login = () => {
     try {
       await instance
         .post("/login", formData)
-        .then((res) =>{console.log(res)} )
+        .then((res) =>{
+          
+          console.log(res)
+          localStorage.setItem('userToken', JSON.stringify(res.data.token));
+        } )
         .catch((err) => console.log(err));
     } catch (err) {
       console.log("Error: ", err.message);
