@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
+let LoginContext=createContext({});
 
 
-
-export default LoginContext=createContext({});
+export default LoginContext 

@@ -4,12 +4,13 @@ import createToken from "./tokenGen.js";
 
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
+
   try {
     const validUser = await User.findOne({ username: username });
     const maxAge =3*24*60*60;
-
+     
     if (!validUser)//error codes changed for unauthorised user
-      return res.status(401).json({
+      return res.json({
         errorcode: 1,
         status: false,
         message: "user not found",
@@ -33,8 +34,9 @@ export const loginUser = async (req, res) => {
       data: validUser,
       token:token
     });
+ 
   } catch (error) {
-    console.log(error.message);
+    console.log("error=",error.message);
   }
 };
 
