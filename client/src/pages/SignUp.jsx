@@ -38,11 +38,11 @@ const SignUp = () => {
   } = useForm({ resolver: yupResolver(userSchema) });
 
   const formSubmit = async (data, e) => {
-    console.log(e);
+   
     e.preventDefault();
 
     try {
-      console.log(data);
+    
       await instance.post("/signup", data);
       data && navigate("/login");
     } catch (err) {

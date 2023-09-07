@@ -1,42 +1,43 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import instance from "../axios/axios";
-import { Input } from "../components/Input.jsx";
 import LoginContext from "../context/LoginContext.js";
+import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
 const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
   const [errorMsg, setErrorMsg] = useState();
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
 
-  
+
+  const userSchema=yup.object({
+    username:yup.string().required("*Please Enter Username"),
+    password:yup.string().required("*Please Enter Username")
+  })
+
+
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const {handleSubmit, register,  formState: { errors } } = useForm({ resolver: yupResolver(userSchema) });
 
-  const handleSubmit = async (e) => {
+
+  const formSubmit=async(data,e)=>{
+    console.log(data);
     e.preventDefault();
     try {
-      let response = await instance.post("/login", formData);
-      console.log(response.data.token);
-      (await response.data.status) && setLoggedIn(true);
-      response &&
-        localStorage.setItem("userToken", JSON.stringify(response.data.token));
-      setErrorMsg(() => response);
-    } catch (err) {
-      console.log("Error: ", err.message);
-    }
-  };
+          let response = await instance.post("/login", data);
+         
+          (await response.data.status) && setLoggedIn(true);
+          response && localStorage.setItem("userToken", JSON.stringify(response.data.token));
+          setErrorMsg(() => response);
+          console.log(response);
+        } catch (err) {
+          console.log("Error: ", err.message);
+        }
 
+
+  }
   useEffect(() => {
     loggedIn && navigate("/profile");
   }, [loggedIn]);
@@ -55,7 +56,7 @@ const Login = () => {
       <div className="flex flex-col items-center w-screen">
         <form
           className="flex flex-col gap-4 sm:w-[500px] max-sm:w-10/12"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(formSubmit)}
         >
           <article className=" mb-4 self-start">
             <h2 className="font-bold dark:text-white text-2xl mb-2">
@@ -65,20 +66,23 @@ const Login = () => {
               Enter your details below
             </p>
           </article>
-          <Input
+          <input
             type="text"
             placeholder="Username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
+            // name="username"
+            // value={formData.username}
+            {...register("username")}
+         
           />
-          <Input
+          <p  className="text-red-500">{errors.username?.message}</p>
+          <input
             type="password"
             placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
+            // name="password"
+            // value={formData.password}
+            {...register("password")}
           />
+           <p  className="text-red-500">{errors.password?.message}</p>
           <div className="flex justify-between">
             <div className="flex gap-2">
               <input type="checkbox" name="" id="" />
