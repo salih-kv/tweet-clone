@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import User from "../model/user.model.js";
+import User from "../../model/user.model.js";
 import createToken from "./tokenGen.js";
 
 export const loginUser = async (req, res) => {
@@ -7,9 +7,10 @@ export const loginUser = async (req, res) => {
 
   try {
     const validUser = await User.findOne({ username: username });
-    const maxAge =3*24*60*60;
-     
-    if (!validUser)//error codes changed for unauthorised user
+    const maxAge = 3 * 24 * 60 * 60;
+
+    if (!validUser)
+      //error codes changed for unauthorised user
       return res.json({
         errorcode: 1,
         status: false,
@@ -24,19 +25,17 @@ export const loginUser = async (req, res) => {
         message: "password not matching",
         data: null,
       });
-      
-    const token=createToken(validUser._id);  
-    // res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000}); 
+
+    const token = createToken(validUser._id);
     res.status(200).json({
       errorcode: 0,
       status: true,
       message: "login successfully",
       data: validUser,
-      token:token
+      token: token,
     });
- 
   } catch (error) {
-    console.log("error=",error.message);
+    console.log("error=", error.message);
   }
 };
 

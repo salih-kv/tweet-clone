@@ -3,10 +3,15 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import { dbConnect } from "./config/db.js";
-import { createUser } from "./controllers/signup.controller.js";
-import { getUsers,updateUsers } from "./controllers/users.controller.js";
-import loginUser from "./controllers/login.controller.js";
-import {createNewTweet,updateTweet,getTweets,deleteTweet} from "./controllers/posts.controller.js";
+import { createUser } from "./controllers/user/signup.controller.js";
+import { getUsers, updateUsers } from "./controllers/user/users.controller.js";
+import loginUser from "./controllers/user/login.controller.js";
+import {
+  createNewTweet,
+  updateTweet,
+  getTweets,
+  deleteTweet,
+} from "./controllers/tweet/tweet.controller.js";
 
 dotenv.config({ path: "./config/config.env" });
 

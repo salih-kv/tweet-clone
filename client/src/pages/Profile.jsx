@@ -2,6 +2,8 @@ import { Button } from "../components/Button.jsx";
 import { Input } from "../components/Input.jsx";
 
 const Profile = () => {
+
+  
   return (
     <div className="dark:bg-[#151C24] dark:text-gray-500 w-full min-h-screen flex justify-between">
       <div className="bg-[#212B35] w-[500px] h-screen hidden lg:block"></div>
