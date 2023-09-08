@@ -1,7 +1,7 @@
 export const Button = ({ variant, ...props }) => {
   let className = "";
   if (variant === "fill") {
-    className = "bg-[#01AB55] text-white active:bg-green-500";
+    className = "bg-[#1DA1F2] text-white active:opacity-95";
   } else if (variant === "outlined") {
     className =
       "border border-slate-300 active:border-red-500 active:text-red-500";
