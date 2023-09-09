@@ -42,7 +42,7 @@ const Login = () => {
     if (token) {
       setLoggedIn(true);
     }
-    loggedIn && navigate("/profile");
+    loggedIn && navigate("/");
   }, [loggedIn, token, setLoggedIn, navigate]);
 
   return (

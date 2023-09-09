@@ -9,7 +9,9 @@ import LoginContext from "./context/LoginContext.js";
 import EditProfile from "./pages/EditProfile.jsx";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("userToken") || false
+  );
   return (
     <LoginContext.Provider value={{ loggedIn, setLoggedIn }}>
       <BrowserRouter>
