@@ -1,4 +1,5 @@
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 const ProfileCard = () => {
   return (
@@ -32,9 +33,11 @@ const ProfileCard = () => {
         </div>
       </div>
       <div className="p-6">
-        <h4 className="text-[#1DA1F2] text-center text-sm lg:text-base">
-          My Profile
-        </h4>
+        <Link to="/profile">
+          <h4 className="text-[#1DA1F2] text-center text-sm lg:text-base">
+            My Profile
+          </h4>
+        </Link>
       </div>
     </div>
   );

@@ -5,9 +5,12 @@ import LoginContext from "../context/LoginContext.js";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
   const [errorMsg, setErrorMsg] = useState();
+
+  const [token] = useState(localStorage.getItem("userToken"));
 
   const userSchema = yup.object({
     username: yup.string().required("Please Enter Username"),
@@ -23,7 +26,6 @@ const Login = () => {
   } = useForm({ resolver: yupResolver(userSchema) });
 
   const formSubmit = async (data, e) => {
-    console.log(data);
     e.preventDefault();
     try {
       let response = await instance.post("/login", data);
@@ -32,14 +34,16 @@ const Login = () => {
       response &&
         localStorage.setItem("userToken", JSON.stringify(response.data.token));
       setErrorMsg(() => response);
-      console.log(response);
     } catch (err) {
       console.log("Error: ", err.message);
     }
   };
   useEffect(() => {
+    if (token) {
+      setLoggedIn(true);
+    }
     loggedIn && navigate("/profile");
-  }, [loggedIn]);
+  }, [loggedIn, token, setLoggedIn, navigate]);
 
   return (
     <div className=" w-full min-h-screen flex justify-between items-center">

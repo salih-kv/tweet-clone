@@ -1,51 +1,67 @@
-import { Button } from "../components/Button.jsx";
-import { Input } from "../components/Input.jsx";
+import { useContext, useEffect, useState } from "react";
+import Header from "../components/Header";
+import { Link, useNavigate } from "react-router-dom";
+import LoginContext from "../context/LoginContext";
 
 const Profile = () => {
+  const [token] = useState(localStorage.getItem("userToken"));
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, [token, loggedIn, setLoggedIn, navigate]);
+
   return (
-    <div className=" dark:text-gray-500 w-full min-h-screen flex justify-between">
-      <div className="bg-[#212B35] w-[500px] h-screen hidden lg:block"></div>
-      <div className="w-full  mt-16 px-2 md:pl-32 flex flex-col max-md:items-center gap-12">
-        <article>
-          <h1 className="font-bold text-xl mb-2 dark:text-white">
-            Account Settings
-          </h1>
-          <p className="text-sm">Change your profile and account settings</p>
-        </article>
-        <div className="flex items-center mb-4">
-          <img
-            className="rounded-full mr-8"
-            src="https://placehold.co/100x100.png"
-            alt="profile-image"
-          />
-          <div className="flex flex-col gap-4">
-            <Button variant="fill">Change picture</Button>
-            <Button variant="outlined">Delete picture</Button>
+    <div className="bg-[#06141D] text-white w-full min-h-screen transition-all px-2 md:px-8 pb-4">
+      <div className="max-w-6xl m-auto">
+        <Header />
+        {/* profile */}
+        <div className="bg-[#1B2730] w-full rounded-2xl flex flex-col overflow-hidden relative">
+          <div className="h-48 overflow-hidden">
+            <img
+              className="rounded-t-2xl w-full"
+              src="https://template.canva.com/EAENvp21inc/1/0/1600w-qt_TMRJF4m0.jpg"
+              alt=""
+            />
           </div>
-        </div>
-        <div className="flex flex-col gap-3 text-md font-medium max-w-lg">
-          <div className="flex gap-4">
-            <div>
-              <label htmlFor="fname">First name</label>
-              <Input id="fname" />
+          <div className="absolute left-10 right-0 top-36">
+            <div className=" w-32 h-32 bg-green-200 rounded-full"></div>
+          </div>
+          <div className="lg:px-8 py-6 flex pt-28 flex-col gap-6 relative">
+            <div className="absolute right-10 top-6">
+              <Link to="/profile/edit">
+                <button className="py-2 px-4 rounded-lg text-sm border border-slate-300 active:border-blue-500 active:text-blue-500">
+                  Edit Profile
+                </button>
+              </Link>
             </div>
-            <div>
-              <label htmlFor="lname">Last name</label>
-              <Input id="lname" />
+            <article className=" flex flex-col gap-1">
+              <h1 className="text-xl lg:text-2xl font-medium">Yeremias NJ</h1>
+              <p className="text-[#788694] text-sm lg:text-base">@notojoyoo</p>
+              <p className="text-[#dae1e7] text-sm lg:text-base">
+                ✨Penting gak Pentig yang penting Posting✨
+              </p>
+            </article>
+            <div className="flex gap-6">
+              <div className="flex gap-2">
+                <h6>6,664</h6>
+                <p className="text-[#788694]">Following</p>
+              </div>
+              <div className="flex gap-2">
+                <h6>9,991</h6>
+                <p className="text-[#788694]">Followers</p>
+              </div>
             </div>
           </div>
-          <div>
-            <label htmlFor="username">Username</label>
-            <Input id="username" />
+          <div className="p-6 flex justify-around">
+            <h4>Tweets</h4>
+            <h4>Comments</h4>
+            <h4>Likes</h4>
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <Input id="password" />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <Button variant="fill">Update</Button>
-          <Button variant="outlined">Cancel</Button>
         </div>
       </div>
     </div>
