@@ -3,6 +3,11 @@ import instance from "../axios/axios";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { BsTwitter } from "react-icons/bs";
+
+import { DarkThemeToggle } from "../components/DarkThemeToggle";
+import { InputField } from "../components/InputField";
+import { InputError } from "../components/InputError";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -49,11 +54,26 @@ const SignUp = () => {
   };
 
   return (
-    <div className=" w-full min-h-screen flex justify-between items-center">
-      <div className="bg-[#212B35] w-[500px] h-screen hidden lg:block"></div>
+    <div className="dark:bg-primary-bg dark:text-white w-full min-h-screen flex justify-between items-center">
+      <div className=" w-[600px] max-lg:hidden lg:block px-4">
+        <div
+          className="dark:bg-secondary-bg flex flex-col items-center justify-center shadow rounded-lg p-8 relative"
+          style={{ height: "calc(100vh - 2rem)" }}
+        >
+          <div className="absolute top-3 left-8">
+            <Link to="/">
+              <BsTwitter className="text-3xl text-blue-500" />
+            </Link>
+          </div>
+          <h1 className="text-3xl font-bold mb-12 tracking-wide">
+            Get tweeting! Signup up now.
+          </h1>
+          {/* <img src="" alt="illustration_signup" className="w-72" /> */}
+        </div>
+      </div>
       <p className=" dark:text-white absolute right-16 top-8 ">
         Already have an account?{" "}
-        <span className="text-[#1DA1F2]">
+        <span className="text-blue-500">
           <Link to="/login">Login</Link>
         </span>{" "}
       </p>
@@ -69,61 +89,41 @@ const SignUp = () => {
             </p>
           </article>
           <div className="flex gap-4 max-sm:flex-col">
-            <input
+            <InputField
               type="text"
               placeholder="First name"
-              {...register("fname", { required: "First Name is required" })}
-              className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-                errors.fname ? "border-red-500" : ""
-              } `}
+              name="fname"
+              register={register}
+              error={errors.fname}
             />
-
-            <input
+            <InputField
               type="text"
               placeholder="Last name"
-              {...register("lname", { required: "Last Name is required" })}
-              className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-                errors.lname ? "border-red-500" : ""
-              } `}
+              name="lname"
+              register={register}
+              error={errors.lname}
             />
           </div>
-          {(errors.fname || errors.lname) && (
-            <>
-              {
-                <p className="text-red-500 text-sm">
-                  {errors.fname?.message || errors.lname?.message}
-                </p>
-              }
-            </>
-          )}
-          <input
+          <InputError error={errors.fname || errors.lname} />
+          <InputField
             type="text"
             placeholder="Username"
-            {...register("username")}
-            className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-              errors.username ? "border-red-500" : ""
-            } `}
+            name="username"
+            register={register}
+            error={errors.username}
           />
 
-          {errors.username && (
-            <p className="text-red-500 text-sm">{errors.username?.message}</p>
-          )}
+          <InputError error={errors.username} />
 
-          <input
+          <InputField
             type="password"
             placeholder="Password"
-            {...register("password")}
-            className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-              errors.password ? "border-red-500" : ""
-            } `}
+            name="password"
+            register={register}
+            error={errors.password}
           />
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password?.message}</p>
-          )}
-          <button
-            className="bg-[#1DA1F2] text-white p-3 rounded-lg active:opacity-95 "
-            type="submit"
-          >
+          <InputError error={errors.password} />
+          <button className="btn-primary p-3 rounded-lg" type="submit">
             Sign Up
           </button>
           <p className="dark:text-gray-400 text-center text-xs">
@@ -138,6 +138,7 @@ const SignUp = () => {
           </p>
         </form>
       </div>
+      <DarkThemeToggle />
     </div>
   );
 };

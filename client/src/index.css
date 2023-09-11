@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  font-family: poppins;
+body {
+  @apply font-display
+}
+
+.btn-primary {
+  @apply bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 disabled:bg-blue-200 disabled:text-blue-700 disabled:opacity-50;
+}
+
+.btn-outlined {
+  @apply bg-transparent text-blue-700 border border-blue-700 hover:bg-blue-50 active:bg-blue-100 disabled:text-blue-700 disabled:border-blue-700 disabled:opacity-50;
+}
+
+.btn-gradient {
+  @apply bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:from-blue-500 hover:to-blue-700 active:from-blue-600 active:to-blue-800 disabled:from-blue-100 disabled:to-blue-300 disabled:text-blue-700 disabled:opacity-50;
 }

@@ -25,7 +25,7 @@ export const DarkThemeToggle = () => {
   };
 
   return (
-    <div className="absolute right-4 bottom-4 bg-[#151C24] dark:bg-white rounded-lg">
+    <div className="absolute right-4 bottom-4 bg-primary-bg dark:bg-white rounded-lg">
       <button className="p-2" id="toggleDark" onClick={toggleDarkMode}>
         {theme === "light" ? (
           <MdLightMode className="text-white" />

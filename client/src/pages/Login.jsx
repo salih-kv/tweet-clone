@@ -5,6 +5,10 @@ import LoginContext from "../context/LoginContext.js";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { DarkThemeToggle } from "../components/DarkThemeToggle";
+import { BsTwitter } from "react-icons/bs";
+import { InputField } from "../components/InputField";
+import { InputError } from "../components/InputError";
 
 const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
@@ -46,12 +50,27 @@ const Login = () => {
   }, [loggedIn, token, setLoggedIn, navigate]);
 
   return (
-    <div className=" w-full min-h-screen flex justify-between items-center">
-      <div className="bg-[#212B35] w-[500px] h-screen hidden lg:block"></div>
+    <div className="dark:bg-primary-bg w-full min-h-screen flex justify-between items-center">
+      <div className=" w-[600px] max-lg:hidden lg:block px-4 ">
+        <div
+          className="dark:bg-secondary-bg dark:text-white flex flex-col items-center justify-center shadow rounded-lg p-4 relative"
+          style={{ height: "calc(100vh - 2rem)" }}
+        >
+          <div className="absolute top-3 left-8">
+            <Link to="/">
+              <BsTwitter className="text-3xl text-blue-500" />
+            </Link>
+          </div>
+          <h1 className="text-3xl font-bold mb-12 tracking-wide">
+            Hi, Welcome back
+          </h1>
+          {/* <img src="" alt="illustration_login" className="w-72" /> */}
+        </div>
+      </div>
 
       <p className=" absolute right-16 top-8 dark:text-white">
         Don&apos;t have an account?{" "}
-        <span className="text-[#1DA1F2]">
+        <span className="text-blue-500">
           <Link to="/signup">Get started</Link>
         </span>{" "}
       </p>
@@ -69,32 +88,32 @@ const Login = () => {
               Enter your details below
             </p>
           </article>
-          <div className="flex flex-col gap-2">
-            <input
+          <div className="flex flex-col gap-4">
+            <InputField
               type="text"
               placeholder="Username"
-              {...register("username")}
-              className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-                errors.username ? "border-red-500" : ""
-              } `}
+              name="username"
+              register={register}
+              error={errors.username}
             />
-            <p className="text-red-500 text-sm">{errors.username?.message}</p>
-            <input
+
+            <InputError error={errors.username} />
+
+            <InputField
               type="password"
               placeholder="Password"
-              {...register("password")}
-              className={`p-3 rounded-lg w-full dark:bg-[#151C24] dark:text-white border border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none ${
-                errors.username ? "border-red-500" : ""
-              } `}
+              name="password"
+              register={register}
+              error={errors.password}
             />
-            <p className="text-red-500 text-sm">{errors.password?.message}</p>
+            <InputError error={errors.password} />
           </div>
           <div className="flex justify-between">
             <div className="flex gap-2">
               <input type="checkbox" name="" id="" />
               <p className="dark:text-white text-sm">Remember me</p>
             </div>
-            <Link className="text-[#1DA1F2] text-sm font-medium" to="">
+            <Link className="text-blue-500 text-sm font-medium" to="">
               Forgot password?
             </Link>
           </div>
@@ -107,14 +126,12 @@ const Login = () => {
             </div>
           )}
 
-          <button
-            className="bg-[#1DA1F2] text-white p-3 rounded-lg active:opacity-95 "
-            type="submit"
-          >
+          <button className="btn-primary p-3 rounded-lg" type="submit">
             Login
           </button>
         </form>
       </div>
+      <DarkThemeToggle />
     </div>
   );
 };

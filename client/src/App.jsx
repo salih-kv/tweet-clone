@@ -7,6 +7,7 @@ import Profile from "./pages/Profile.jsx";
 import { useState } from "react";
 import LoginContext from "./context/LoginContext.js";
 import EditProfile from "./pages/EditProfile.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -24,6 +25,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<EditProfile />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </LoginContext.Provider>
