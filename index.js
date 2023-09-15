@@ -12,6 +12,7 @@ import {
   getTweets,
   deleteTweet,
 } from "./controllers/tweet/tweet.controller.js";
+import { verifyToken } from "./controllers/user/tokenValidation.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -27,6 +28,7 @@ dbConnect();
 app.post("/signup", createUser);
 app.use("/users", getUsers);
 app.post("/login", loginUser);
+app.post("/verifyToken", verifyToken);
 app.post("/createTweet", createNewTweet);
 app.get("/getTweets", getTweets);
 app.post("/updateTweet", updateTweet);

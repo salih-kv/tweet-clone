@@ -44,6 +44,15 @@ const Login = () => {
   };
   useEffect(() => {
     if (token) {
+      let tokenStr=token;
+      instance.interceptors.request.use(function (config) {
+       
+        config.headers.Authorization =  token ? `Bearer ${tokenStr.replace(/['"]/g, '')}` : '';
+        return config;
+      });
+      let response =  instance.post("/verifyToken");
+
+      if(response.status)
       setLoggedIn(true);
     }
     loggedIn && navigate("/");

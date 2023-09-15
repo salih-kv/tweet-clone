@@ -13,13 +13,17 @@ const postSchema = Schema({
     type: String,
     required: [true, "Content is required"],
   },
-  likes: {
-    type: Number,
-  },
+  likes:[],
+
   comments: {
     type: String,
   },
-});
+},
+{
+  timestamps: true,
+}
+
+);
 
 const Posts = model("Posts", postSchema); // users is the collection name
 
