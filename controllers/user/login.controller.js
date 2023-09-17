@@ -26,13 +26,15 @@ export const loginUser = async (req, res) => {
         data: null,
       });
 
-    const token = createToken(validUser._id);
+    let token = createToken(validUser._id);
+
+    let user = {...validUser._doc,token}
     res.status(200).json({
       errorcode: 0,
       status: true,
       message: "login successfully",
-      data: validUser,
-      token: token,
+      data: user,
+      
     });
   } catch (error) {
     console.log("error=", error.message);

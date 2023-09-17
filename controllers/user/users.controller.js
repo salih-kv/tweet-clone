@@ -1,3 +1,4 @@
+import { BearerParser } from "bearer-token-parser";
 import User from "../../model/user.model.js";
 
 export const getUsers = async (req, res) => {
@@ -13,15 +14,19 @@ export const getUsers = async (req, res) => {
 export const updateUsers = async (req, res) => {
   const token = BearerParser.parseBearerToken(req.headers);
   const { userId, userInfo } = req.body;
+  console.log(req.body);
+  console.log(req.headers);
+  console.log(token);
   try {
+   
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const validUser = await User.findOne({ _id: userId });
 
-    // validUser.username = validUser
-    // validUser.roles = roles
-    // validUser.active = active
+    validUser.username = validUser
+    validUser.roles = roles
+    validUser.active = active
 
-    // validUser.save()
+    validUser.save()
     res.status(200).json({
       errorcode: 0,
       status: true,

@@ -7,27 +7,27 @@ import Posts from "../../model/posts.model.js";
 
 
 export const getTweets = async (req, res) => {
-  const token =  BearerParser.parseBearerToken(req.headers);
+  // const token =  BearerParser.parseBearerToken(req.headers);
   const { userId } = req.body
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
     const currentUserPosts = await Posts.find({ userId: userId });
-    const followingposts = await Posts.find();// logic to fectch posts of all followers or all posts
-    let tweets=[...currentUserPosts,followingposts]
+    // const followingposts = await Posts.find();// logic to fectch posts of all followers or all posts
+    // let tweets={...currentUserPosts,followinposts}
     res.status(200).json({
       errorcode: 0,
       status: true,
       message: "Fetched posts successfully",
-      data: tweets
+      data: currentUserPosts
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(401).json({
-        errorcode: 1,
-        status: false,
-        message: "Invalid Token",
-        data: null,
-      });
+    // return res.status(401).json({
+    //     errorcode: 1,
+    //     status: false,
+    //     message: "Invalid Token",
+    //     data: null,
+    //   });
   }
 };
 

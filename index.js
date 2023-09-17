@@ -13,6 +13,7 @@ import {
   deleteTweet,
 } from "./controllers/tweet/tweet.controller.js";
 import { verifyToken } from "./controllers/user/tokenValidation.js";
+import protect from "./middleware/authMiddleware.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -30,7 +31,7 @@ app.use("/users", getUsers);
 app.post("/login", loginUser);
 app.post("/verifyToken", verifyToken);
 app.post("/createTweet", createNewTweet);
-app.get("/getTweets", getTweets);
+app.get("/getTweets",protect, getTweets);
 app.post("/updateTweet", updateTweet);
 app.post("/deleteTweet", deleteTweet);
 app.post("/updateUsers", updateUsers);

@@ -1,17 +1,55 @@
 import { useContext, useEffect, useState } from "react";
 import { Button } from "../components/Button.jsx";
-import { Input } from "../components/Input.jsx";
+// import { Input } from "../components/Input.jsx";
 import LoginContext from "../context/LoginContext.js";
 import { useNavigate } from "react-router-dom";
 import { DarkThemeToggle } from "../components/DarkThemeToggle.jsx";
 import Header from "../components/Header.jsx";
 import { BsChevronRight } from "react-icons/bs";
 
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import instance from "../axios/axios.js";
+import { InputError } from "../components/InputError.jsx";
+import { InputField } from "../components/InputField.jsx";
+
+
 const EditProfile = () => {
+
+
+  const navigate = useNavigate();
+
   const [token] = useState(localStorage.getItem("userToken"));
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
 
-  const navigate = useNavigate();
+
+  // ~ form validation schema
+  const userSchema = yup.object({
+    fname: yup.string().required("Please Enter First Name"),
+    lname: yup.string().required().required("Please Enter Last Name"),
+    username: yup.string().required("Please Enter username"),
+    password: yup.string().min(4).max(12).required("Please Enter password"),
+  })
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(userSchema) });
+
+
+  const formSubmit=async(data,e)=>{
+  
+    e.preventDefault();
+    console.log("submitted");
+try {
+ let response=  await instance.post("/updateUsers", data);
+  response && navigate("/profile/edit");
+} catch (err) {
+  console.log("Error: ", err.message);
+}
+  }
 
   useEffect(() => {
     if (token) {
@@ -69,30 +107,66 @@ const EditProfile = () => {
                   <Button variant="outlined">Delete picture</Button>
                 </div>
               </div>
+              <form onSubmit={handleSubmit(formSubmit)}>
               <div className="flex flex-col gap-3 text-md font-medium max-w-lg">
                 <div className="flex gap-4">
                   <div>
                     <label htmlFor="fname">First name</label>
-                    <Input id="fname" />
+                    <InputField
+                   
+              placeholder="First name"
+              name="fname"
+              register={register}
+              error={errors.fname} id="fname" 
+              // {...register("fname")}
+              />
                   </div>
+                
                   <div>
                     <label htmlFor="lname">Last name</label>
-                    <Input id="lname" />
+                    <InputField
+                    
+              placeholder="Last name"
+              name="lname"
+              register={register}
+              error={errors.lname} id="lname" 
+              // {...register("lname")}
+              />
                   </div>
                 </div>
+                  <InputError error={errors.fname || errors.lname} />
                 <div>
                   <label htmlFor="username">Username</label>
-                  <Input id="username" />
+                  <InputField
+                  // {...register("username")}
+              placeholder="User Name"
+              name="username"
+              register={register}
+              error={errors.username}
+              id="username"
+               />
                 </div>
+                <InputError error={errors.username} />
                 <div>
                   <label htmlFor="password">Password</label>
-                  <Input id="password" />
+                  <InputField
+                  // {...register("password")}
+              placeholder="Password"
+              name="password"
+              register={register}
+              error={errors.password} 
+               id="password" />
                 </div>
+                <InputError error={errors.password} />
               </div>
+              
               <div className="flex gap-4">
-                <Button variant="fill">Update</Button>
+              <div className="flex gap-4">
+                <Button type="submit" variant="fill">Update</Button>
                 <Button variant="outlined">Cancel</Button>
               </div>
+              </div>
+              </form>
             </div>
             <DarkThemeToggle />
           </div>
