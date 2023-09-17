@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-display
+  @apply font-display dark:text-white
 }
 
 .btn-primary {

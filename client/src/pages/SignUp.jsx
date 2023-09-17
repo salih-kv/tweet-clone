@@ -138,7 +138,6 @@ const SignUp = () => {
           </p>
         </form>
       </div>
-      <DarkThemeToggle />
     </div>
   );
 };

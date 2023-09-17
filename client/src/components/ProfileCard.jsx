@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 const ProfileCard = () => {
   return (
-    <div className="dark:bg-secondary-bg bg-white shadow-sm  max-w-[360px] w-[280px] rounded-2xl flex flex-col items-center md:block max-md:hidden ">
-      <div className="h-25 w-full relative mb-8">
+    <div className="dark:bg-secondary-bg bg-white-secondary max-w-[360px] w-[300px] rounded-md  flex flex-col items-center md:block max-md:hidden">
+      <div className="h-20 w-full relative mb-8">
         <img
-          className="rounded-t-2xl h-full w-full"
+          className="rounded-t-md h-full w-full"
           src="https://template.canva.com/EAENvp21inc/1/0/1600w-qt_TMRJF4m0.jpg"
           alt=""
         />

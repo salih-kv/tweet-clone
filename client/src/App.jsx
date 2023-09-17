@@ -22,7 +22,10 @@ function App() {
           {/* if jwt present then only make access to this route */}
           <Route element={<ProtectedRoutes />}>
             <Route index element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile">
+              <Route index element={<Profile />} />
+              <Route path="comments" element={<Home />} />
+            </Route>
             <Route path="/profile/edit" element={<EditProfile />} />
           </Route>
           <Route path="*" element={<NotFound />} />

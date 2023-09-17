@@ -4,8 +4,6 @@ import {BearerParser} from 'bearer-token-parser';
 import Posts from "../../model/posts.model.js";
 
 
-
-
 export const getTweets = async (req, res) => {
   // const token =  BearerParser.parseBearerToken(req.headers);
   const { userId } = req.body

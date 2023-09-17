@@ -5,7 +5,6 @@ import LoginContext from "../context/LoginContext.js";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DarkThemeToggle } from "../components/DarkThemeToggle";
 import { BsTwitter } from "react-icons/bs";
 import { InputField } from "../components/InputField";
 import { InputError } from "../components/InputError";
@@ -35,25 +34,18 @@ const Login = () => {
       let response = await instance.post("/login", data);
 
       (await response.data.status) && setLoggedIn(true);
-      response &&
-        localStorage.setItem("userToken", JSON.stringify(response.data.token));
+      response && localStorage.setItem("userToken", response.data.data.token);
       setErrorMsg(() => response);
     } catch (err) {
       console.log("Error: ", err.message);
     }
   };
+
   useEffect(() => {
     if (token) {
-      let tokenStr=token;
-      instance.interceptors.request.use(function (config) {
-       
-        config.headers.Authorization =  token ? `Bearer ${tokenStr.replace(/['"]/g, '')}` : '';
-        return config;
-      });
-      let response =  instance.post("/verifyToken");
+      let response = instance.post("/verifyToken");
 
-      if(response.status)
-      setLoggedIn(true);
+      if (response.status) setLoggedIn(true);
     }
     loggedIn && navigate("/");
   }, [loggedIn, token, setLoggedIn, navigate]);
@@ -140,7 +132,6 @@ const Login = () => {
           </button>
         </form>
       </div>
-      <DarkThemeToggle />
     </div>
   );
 };

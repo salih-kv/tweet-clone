@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import LoginContext from "../context/LoginContext";
-import { DarkThemeToggle } from "../components/DarkThemeToggle";
 
 const Profile = () => {
   const [token] = useState(localStorage.getItem("userToken"));
@@ -65,7 +64,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <DarkThemeToggle />
     </div>
   );
 };

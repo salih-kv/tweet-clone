@@ -25,6 +25,6 @@ const postSchema = Schema({
 
 );
 
-const Posts = model("Posts", postSchema); // users is the collection name
+const Posts = model("Posts", postSchema);
 
 export default Posts;

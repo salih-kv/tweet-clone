@@ -7,6 +7,7 @@ import { LuMessagesSquare } from "react-icons/lu";
 import { MdNotifications } from "react-icons/md";
 import { useContext, useState } from "react";
 import LoginContext from "../context/LoginContext";
+import { DarkThemeToggle } from "./DarkThemeToggle";
 
 const Header = () => {
   const [dropdownToggle, setDropdownToggle] = useState(false);
@@ -15,7 +16,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex justify-between items-center text-2xl py-4 px-2 mb-2">
+    <header className="bg-white dark:bg-primary-bg flex justify-between items-center text-2xl py-4 px-2 mb-2 sticky top-0 z-50">
       {/* left */}
       <div>
         <Link to="/">
@@ -37,6 +38,7 @@ const Header = () => {
           <Link to="/notifications">
             <MdNotifications />
           </Link>
+          <DarkThemeToggle />
         </div>
         <div className="flex items-center gap-4 sm:gap-8 sm:pl-4 sm:border-l-2 sm:border-[#14222B]">
           <div className="sm:dark:bg-[#2A3843] p-2 rounded-3xl flex items-center gap-2 relative border">
