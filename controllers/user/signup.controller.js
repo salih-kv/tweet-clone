@@ -1,29 +1,24 @@
 import bcrypt from "bcrypt";
-import formData from "../../model/user.model.js";
+import Users from "../../model/user.model.js";
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
   const { fname, lname, username, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
     //add a function to check if user email already exists
 
-    const user = await formData.create({
+    const user = await Users.create({
       fname,
       lname,
       username,
       password: hashedPassword,
     });
 
-    res
-      .status(200)
-      .json({
-        errorcode: 0,
-        status: true,
-        message: "User created succesfully",
-      });
+    res.status(200).json({
+      status: true,
+      message: "User created successfully",
+    });
   } catch (err) {
-    console.error("Error creating user:", err);
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

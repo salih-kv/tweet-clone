@@ -1,6 +1,11 @@
 import { Schema, model } from "mongoose";
+import { nanoid } from "nanoid";
 
 const userSchema = Schema({
+  userId: {
+    type: String,
+    default: () => nanoid(5),
+  },
   fname: {
     type: String,
     required: [true, "First Name is required"],
@@ -19,6 +24,6 @@ const userSchema = Schema({
   },
 });
 
-const User = model("User", userSchema); // users is the collection name
+const Users = model("Users", userSchema);
 
-export default User;
+export default Users;

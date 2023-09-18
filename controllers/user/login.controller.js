@@ -1,44 +1,34 @@
 import bcrypt from "bcrypt";
-import User from "../../model/user.model.js";
-import createToken from "./tokenGen.js";
+import jwt from "jsonwebtoken";
+import Users from "../../model/user.model.js";
+import { errorHandler } from "../../utils/errorHandler.js";
 
-export const loginUser = async (req, res) => {
+export const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "24h",
+  });
+};
+
+export const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const validUser = await User.findOne({ username: username });
-    const maxAge = 3 * 24 * 60 * 60;
+    const validUser = await Users.findOne({ username: username });
 
-    if (!validUser)
-      //error codes changed for unauthorised user
-      return res.json({
-        errorcode: 1,
-        status: false,
-        message: "user not found",
-        data: null,
-      });
-    let compare = await bcrypt.compare(password, validUser.password);
-    if (!compare)
-      return res.status(401).json({
-        errorcode: 2,
-        status: false,
-        message: "password not matching",
-        data: null,
-      });
+    if (!validUser) return next(errorHandler(404, "User not found"));
+
+    let validPassword = await bcrypt.compare(password, validUser.password);
+    if (!validPassword) return next(errorHandler(401, "wrong credentials"));
 
     let token = createToken(validUser._id);
 
-    let user = {...validUser._doc,token}
+    let user = { ...validUser._doc, token };
     res.status(200).json({
-      errorcode: 0,
       status: true,
       message: "login successfully",
       data: user,
-      
     });
-  } catch (error) {
-    console.log("error=", error.message);
+  } catch (err) {
+    next(err);
   }
 };
-
-export default loginUser;

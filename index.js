@@ -4,16 +4,18 @@ import cors from "cors";
 
 import { dbConnect } from "./config/db.js";
 import { createUser } from "./controllers/user/signup.controller.js";
-import { getUsers, updateUsers } from "./controllers/user/users.controller.js";
-import loginUser from "./controllers/user/login.controller.js";
+import {
+  deleteUser,
+  getUser,
+  updateUser,
+} from "./controllers/user/user.controller.js";
 import {
   createNewTweet,
-  updateTweet,
   getTweets,
   deleteTweet,
 } from "./controllers/tweet/tweet.controller.js";
-import { verifyToken } from "./controllers/user/tokenValidation.js";
-import protect from "./middleware/authMiddleware.js";
+import { protect } from "./utils/authMiddleware.js";
+import { loginUser } from "./controllers/user/login.controller.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -27,13 +29,28 @@ app.use(cors());
 dbConnect();
 
 app.post("/signup", createUser);
-app.use("/users", getUsers);
 app.post("/login", loginUser);
-app.post("/verifyToken", verifyToken);
-app.post("/createTweet", createNewTweet);
-app.get("/getTweets",protect, getTweets);
-app.post("/updateTweet", updateTweet);
-app.post("/deleteTweet", deleteTweet);
-app.post("/updateUsers", updateUsers);
+
+// ~------------------------------------------------- user
+app.post("/getUser", protect, getUser);
+// app.post("/updateUser/:userId", updateUser);
+// app.post("/deleteUser/:userId", deleteUser);
+
+// ~------------------------------------------------- tweet
+app.post("/createTweet", protect, createNewTweet);
+app.get("/getTweets", protect, getTweets);
+app.post("/deleteTweet", protect, deleteTweet);
+
+// error handling middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  const status = err.status;
+
+  return res.status(statusCode).json({
+    status: status || false,
+    message,
+  });
+});
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
