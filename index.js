@@ -14,8 +14,9 @@ import {
   getTweets,
   deleteTweet,
 } from "./controllers/tweet/tweet.controller.js";
-import { protect } from "./utils/authMiddleware.js";
+import { verifyToken } from "./utils/authMiddleware.js";
 import { loginUser } from "./controllers/user/login.controller.js";
+import { verifyUser } from "./utils/verifyUser.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -28,18 +29,20 @@ app.use(cors());
 
 dbConnect();
 
+
 app.post("/signup", createUser);
 app.post("/login", loginUser);
+app.post("/verifyUser", verifyUser)
 
 // ~------------------------------------------------- user
-app.post("/getUser", protect, getUser);
-// app.post("/updateUser/:userId", updateUser);
-// app.post("/deleteUser/:userId", deleteUser);
+app.post("/getUser", verifyToken, getUser);
+app.post("/updateUser/:userId", updateUser);
+app.post("/deleteUser/:userId", deleteUser);
 
 // ~------------------------------------------------- tweet
-app.post("/createTweet", protect, createNewTweet);
-app.get("/getTweets", protect, getTweets);
-app.post("/deleteTweet", protect, deleteTweet);
+app.post("/createTweet", verifyToken, createNewTweet);
+app.get("/getTweets", verifyToken, getTweets);
+app.post("/deleteTweet", verifyToken, deleteTweet);
 
 // error handling middleware
 app.use((err, req, res, next) => {

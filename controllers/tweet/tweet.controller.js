@@ -50,8 +50,6 @@ export const likeTweet = async (req, res, next) => {
   const tweetId = req.params.id;
   const { userId } = req.body;
 
-  // *
-
   try {
     const tweet = await Tweets.findById(tweetId);
     if (!tweet.likes.includes(userId)) {

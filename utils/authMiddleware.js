@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
-import User from "../model/user.model.js";
 import { errorHandler } from "./errorHandler.js";
 
 // *
 
-export const protect = async (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   let token;
   try {
     if (
@@ -13,9 +12,8 @@ export const protect = async (req, res, next) => {
     ) {
       try {
         token = req.headers.authorization.split(" ")[1];
-        const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        req.user = await User.findById(decode.id).select("-password");
-        next()
+        jwt.verify(token, process.env.JWT_SECRET_KEY);
+        next();
       } catch (err) {
         next(err);
       }
