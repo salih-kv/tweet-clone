@@ -33,7 +33,12 @@ const Login = () => {
     try {
       let response = await instance.post("/login", data);
 
-      (await response.data.status) && setLoggedIn(true);
+      response?.data?.status &&
+        setLoggedIn((prev) => ({
+          ...prev,
+          token: true,
+          data: response.data.data,
+        }));
       response && localStorage.setItem("userToken", response.data.data.token);
       setErrorMsg(() => response);
     } catch (err) {
@@ -42,12 +47,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      let response = instance.post("/verifyToken");
-
-      if (response.status) setLoggedIn(true);
-    }
-    loggedIn && navigate("/");
+    console.log(loggedIn);
+    loggedIn.token && navigate("/");
   }, [loggedIn, token, setLoggedIn, navigate]);
 
   return (

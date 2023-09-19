@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+// import { useContext, useEffect, useState } from "react";
 import { Button } from "../components/Button.jsx";
 // import { Input } from "../components/Input.jsx";
-import LoginContext from "../context/LoginContext.js";
+// import LoginContext from "../context/LoginContext.js";
 import { useNavigate } from "react-router-dom";
 import { DarkThemeToggle } from "../components/DarkThemeToggle.jsx";
 import Header from "../components/Header.jsx";
@@ -16,12 +16,10 @@ import { InputField } from "../components/InputField.jsx";
 
 
 const EditProfile = () => {
-
-
   const navigate = useNavigate();
 
-  const [token] = useState(localStorage.getItem("userToken"));
-  const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  // const [token] = useState(localStorage.getItem("userToken"));
+  // const { loggedIn, setLoggedIn } = useContext(LoginContext);
 
 
   // ~ form validation schema
@@ -51,11 +49,6 @@ try {
 }
   }
 
-  useEffect(() => {
-    if (token) {
-      setLoggedIn(true);
-    }
-  }, [token, loggedIn, setLoggedIn, navigate]);
 
   return (
     <div className="dark:bg-primary-bg dark:text-white bg-lightPrimary">

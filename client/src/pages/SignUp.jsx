@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BsTwitter } from "react-icons/bs";
 
-import { DarkThemeToggle } from "../components/DarkThemeToggle";
 import { InputField } from "../components/InputField";
 import { InputError } from "../components/InputError";
 
