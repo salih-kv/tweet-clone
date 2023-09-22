@@ -14,6 +14,9 @@ import {
   getTweets,
   deleteTweet,
 } from "./controllers/tweet/tweet.controller.js";
+import {
+  uploadProfile,
+} from "./controllers/uploads/upload.controller.js";
 import { verifyToken } from "./utils/authMiddleware.js";
 import { loginUser } from "./controllers/user/login.controller.js";
 import { verifyUser } from "./utils/verifyUser.js";
@@ -23,7 +26,7 @@ dotenv.config({ path: "./config/config.env" });
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
@@ -43,6 +46,9 @@ app.post("/deleteUser/:userId", deleteUser);
 app.post("/createTweet", verifyToken, createNewTweet);
 app.get("/getTweets", verifyToken, getTweets);
 app.post("/deleteTweet", verifyToken, deleteTweet);
+
+// ~------------------------------------------------- File upload
+app.post("/uploads",verifyToken, uploadProfile);
 
 // error handling middleware
 app.use((err, req, res, next) => {
