@@ -6,7 +6,6 @@ export const createUser = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     //add a function to check if user email already exists
-
     const user = await Users.create({
       fname,
       lname,
@@ -19,6 +18,11 @@ export const createUser = async (req, res, next) => {
       message: "User created successfully",
     });
   } catch (err) {
-    next(err);
+    console.log(err,"error name")
+    if (err.name === 'MongoServerError' && err.code === 11000) {
+      next(new Error('User already exists'));
+  } else {
+    next(err);// ?
+  }
   }
 };
