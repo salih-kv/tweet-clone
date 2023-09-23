@@ -7,9 +7,12 @@ import { BsTwitter } from "react-icons/bs";
 
 import { InputField } from "../components/InputField";
 import { InputError } from "../components/InputError";
+import { BiSolidHide, BiShowAlt } from "react-icons/bi";
+import { useState } from "react";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
   // form validation
   const userSchema = yup.object().shape({
     fname: yup.string().required("Please Enter First Name"),
@@ -114,14 +117,27 @@ const SignUp = () => {
 
           <InputError error={errors.username} />
 
-          <InputField
-            type="password"
-            placeholder="Password"
-            name="password"
-            register={register}
-            error={errors.password}
-          />
-          <InputError error={errors.password} />
+          <div className="relative">
+            <InputField
+              placeholder="Password"
+              name="password"
+              register={register}
+              error={errors.password}
+              type={show ? "text" : "password"}
+            />
+            {show ? (
+              <BiShowAlt
+                className="absolute top-4 right-5 text-lg cursor-pointer"
+                onClick={() => setShow((prev) => !prev)}
+              />
+            ) : (
+              <BiSolidHide
+                className="absolute top-4 right-5 text-lg cursor-pointer"
+                onClick={() => setShow((prev) => !prev)}
+              />
+            )}
+            <InputError error={errors.password} />
+          </div>
           <button className="btn-primary p-3 rounded-lg" type="submit">
             Sign Up
           </button>
