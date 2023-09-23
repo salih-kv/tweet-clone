@@ -8,12 +8,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { BsTwitter } from "react-icons/bs";
 import { InputField } from "../components/InputField";
 import { InputError } from "../components/InputError";
+import { BiSolidHide, BiShowAlt } from "react-icons/bi";
 
 const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
   const [errorMsg, setErrorMsg] = useState();
 
   const [token] = useState(localStorage.getItem("userToken"));
+  const [show, setShow] = useState(false);
 
   const userSchema = yup.object({
     username: yup.string().required("Please Enter Username"),
@@ -101,14 +103,27 @@ const Login = () => {
 
             <InputError error={errors.username} />
 
-            <InputField
-              type="password"
-              placeholder="Password"
-              name="password"
-              register={register}
-              error={errors.password}
-            />
-            <InputError error={errors.password} />
+            <div className="relative">
+              <InputField
+                placeholder="Password"
+                name="password"
+                register={register}
+                error={errors.password}
+                type={show ? "text" : "password"}
+              />
+              {show ? (
+                <BiShowAlt
+                  className="absolute top-4 right-5 text-lg cursor-pointer"
+                  onClick={() => setShow((prev) => !prev)}
+                />
+              ) : (
+                <BiSolidHide
+                  className="absolute top-4 right-5 text-lg cursor-pointer"
+                  onClick={() => setShow((prev) => !prev)}
+                />
+              )}
+              <InputError error={errors.password} />
+            </div>
           </div>
           <div className="flex justify-between">
             <div className="flex gap-2">
