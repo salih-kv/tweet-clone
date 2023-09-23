@@ -9,6 +9,7 @@ import { BsTwitter } from "react-icons/bs";
 import { InputField } from "../components/InputField";
 import { InputError } from "../components/InputError";
 import { BiSolidHide, BiShowAlt } from "react-icons/bi";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
@@ -42,6 +43,9 @@ const Login = () => {
           data: response.data.data,
         }));
       response && localStorage.setItem("userToken", response.data.data.token);
+      response &&
+        Cookies.set("userId", response.data.data.userId, { expires: 7 });
+
       setErrorMsg(() => response);
     } catch (err) {
       console.log("Error: ", err.message);
@@ -49,7 +53,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log(loggedIn);
     loggedIn.token && navigate("/");
   }, [loggedIn, token, setLoggedIn, navigate]);
 

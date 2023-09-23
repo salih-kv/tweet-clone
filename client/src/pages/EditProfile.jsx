@@ -1,27 +1,25 @@
-// import { useContext, useEffect, useState } from "react";
-import { Button } from "../components/Button.jsx";
-// import { Input } from "../components/Input.jsx";
-// import LoginContext from "../context/LoginContext.js";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header.jsx";
 import { BsChevronRight } from "react-icons/bs";
 import { BiSolidHide, BiShowAlt } from "react-icons/bi";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import instance from "../axios/axios.js";
+
+import { Button } from "../components/Button.jsx";
+import Header from "../components/Header.jsx";
 import { InputError } from "../components/InputError.jsx";
 import { InputField } from "../components/InputField.jsx";
-import { useState } from "react";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-
-  // const [token] = useState(localStorage.getItem("userToken"));
-  // const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  const [token] = useState(localStorage.getItem("userToken"));
 
   const [show, setShow] = useState(false);
+  const userId = Cookies.get("userId");
+  const [user, setUser] = useState();
 
   // ~ form validation schema
   const userSchema = yup.object({
@@ -47,6 +45,17 @@ const EditProfile = () => {
       console.log("Error: ", err.message);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      instance
+        .post("/getUser", { userId })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, [token, setUser, userId]);
+
+  console.log(user);
 
   return (
     <div className="dark:bg-primary-bg dark:text-white bg-lightPrimary">

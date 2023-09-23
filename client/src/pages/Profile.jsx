@@ -1,13 +1,23 @@
-// import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
-// import LoginContext from "../context/LoginContext";
+import instance from "../axios/axios";
+import Cookies from "js-cookie";
 
 const Profile = () => {
-  // const [token] = useState(localStorage.getItem("userToken"));
-  // const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  const [token] = useState(localStorage.getItem("userToken"));
 
+  const userId = Cookies.get("userId");
+  const [user, setUser] = useState();
 
+  useEffect(() => {
+    if (token) {
+      instance
+        .post("/getUser", { userId })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, [token, userId]);
 
   return (
     <div className="bg-off-white text-black dark:bg-[#06141D] dark:text-white w-full min-h-screen transition-all px-2 md:px-8 pb-4">
@@ -34,11 +44,9 @@ const Profile = () => {
               </Link>
             </div>
             <article className=" flex flex-col gap-1">
-              <h1 className="text-xl lg:text-2xl font-medium">Yeremias NJ</h1>
-              <p className="text-[#788694] text-sm lg:text-base">@notojoyoo</p>
-              <p className="text-[#dae1e7] text-sm lg:text-base">
-                Penting gak Pentig yang penting Posting✨
-              </p>
+              <h1 className="text-xl lg:text-2xl font-medium">{user?.fname}</h1>
+              <p className="text-[#788694] text-sm lg:text-base">{`@${user?.username}`}</p>
+              <p className="text-[#dae1e7] text-sm lg:text-base">undefined</p>
             </article>
             <div className="flex gap-6">
               <div className="flex gap-2">
