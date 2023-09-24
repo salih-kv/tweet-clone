@@ -14,48 +14,51 @@ import { InputError } from "../components/InputError.jsx";
 import { InputField } from "../components/InputField.jsx";
 
 const EditProfile = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [token] = useState(localStorage.getItem("userToken"));
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const userId = Cookies.get("userId");
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
 
   // ~ form validation schema
   const userSchema = yup.object({
     fname: yup.string().required("Please Enter First Name"),
     lname: yup.string().required().required("Please Enter Last Name"),
     username: yup.string().required("Please Enter username"),
-    password: yup.string().min(4).max(12).required("Please Enter password"),
+    // password: yup.string().min(4).max(12).required("Please Enter password"),
   });
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(userSchema) });
+  const { register, handleSubmit,  formState: { errors }, reset } = useForm({
+    resolver: yupResolver(userSchema),
+    defaultValues: user,
+  });
+
+  const getUserProfile=()=>{
+    instance
+        .post("/getUser", { userId })
+        .then((res) => {setUser(res.data); reset(res.data)})
+        .catch((err) => console.log(err));
+  }
 
   const formSubmit = async (data, e) => {
     e.preventDefault();
     console.log("submitted");
     try {
-      let response = await instance.post("/updateUsers", data);
-      response && navigate("/profile/edit");
+      let response = await instance.post(`/updateUser/${userId}`, data);      
+      response && getUserProfile()
     } catch (err) {
       console.log("Error: ", err.message);
     }
   };
 
+
+
   useEffect(() => {
     if (token) {
-      instance
-        .post("/getUser", { userId })
-        .then((res) => setUser(res.data))
-        .catch((err) => console.log(err));
+      getUserProfile()
     }
-  }, [token, setUser, userId]);
-
-  console.log(user);
+  }, [token,  userId]);
 
   return (
     <div className="dark:bg-primary-bg dark:text-white bg-lightPrimary">
@@ -147,7 +150,7 @@ const EditProfile = () => {
                     />
                   </div>
                   <InputError error={errors.username} />
-                  <div className="relative">
+                  {/* <div className="relative">
                     <label htmlFor="password">Password</label>
                     <InputField
                       // {...register("password")}
@@ -169,7 +172,7 @@ const EditProfile = () => {
                         onClick={() => setShow((prev) => !prev)}
                       />
                     )}
-                  </div>
+                  </div> */}
                   <InputError error={errors.password} />
                 </div>
 

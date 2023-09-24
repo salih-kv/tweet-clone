@@ -4,40 +4,41 @@ import Users from "../../model/user.model.js";
 export const getUser = async (req, res, next) => {
   const { userId } = req.body;
   try {
-    const user = await Users.findOne({ userId });
+    const user = await Users.findOne({ userId },{ password: 0});
+    
     res.status(200).json(user);
   } catch (err) {
     next(err);
   }
 };
 
-// !pending : update user, delete user
 
 export const updateUser = async (req, res, next) => {
-  const { userId, userInfo } = req.body;
-
+  const userId = req.params.userId;
+  const { username,fname,lname, } = req.body;
   // *
 
   try {
-    const validUser = await Users.findById({ userId });
+    let validUser = await Users.findOne({ userId });
 
-    // validUser.username = validUser;
-    // validUser.roles = roles;
-    // validUser.active = active;
+    validUser.username = username;
+    validUser.fname = fname;
+    validUser.lname = lname;
 
-    validUser.save();
-    res.status(200).json({
+    let response=await validUser.save({ validateBeforeSave: false });
+    if(response){
+      res.status(200).json({
       status: true,
       message: "Userinfo updated successfully",
-      data: {
-        posts: "trial",
-      },
+      
     });
+    }
+    
   } catch (err) {
     next(err);
   }
 };
 
-// *
+// !pending : delete user
 
 export const deleteUser = () => {};
