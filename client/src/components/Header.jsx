@@ -74,7 +74,7 @@ const Header = () => {
                       role="menuitem"
                       onClick={() => {
                         localStorage.removeItem("userToken");
-                        setLoggedIn((prev) => ({ ...prev, token: true }));
+                        setLoggedIn((prev) => ({ ...prev, token: false }));
                         navigate("/login");
                       }}
                     >
