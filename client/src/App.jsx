@@ -8,10 +8,14 @@ import { useState } from "react";
 import LoginContext from "./context/LoginContext.js";
 import EditProfile from "./pages/EditProfile.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Security from "./pages/Security.jsx";
+import Notifications from "./pages/Notifications.jsx";
+import Settings from "./pages/Settings.jsx";
+import Cookies from "js-cookie";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState({
-    token: localStorage.getItem("userToken") || false,
+    token: Cookies.get("userToken") || false,
     data: undefined,
   });
   return (
@@ -20,14 +24,14 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          {/* if jwt present then only make access to this route */}
           <Route element={<ProtectedRoutes />}>
             <Route index element={<Home />} />
-            <Route path="/profile">
-              <Route index element={<Profile />} />
-              <Route path="comments" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />}>
+              <Route path="account" element={<EditProfile />} />
+              <Route path="security" element={<Security />} />
+              <Route path="notification" element={<Notifications />} />
             </Route>
-            <Route path="/profile/edit" element={<EditProfile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

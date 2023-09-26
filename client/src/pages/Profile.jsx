@@ -5,12 +5,13 @@ import instance from "../axios/axios";
 import Cookies from "js-cookie";
 
 const Profile = () => {
-  const [token] = useState(localStorage.getItem("userToken"));
+  const [token] = useState(Cookies.get("userToken"));
 
   const userId = Cookies.get("userId");
   const [user, setUser] = useState();
 
   useEffect(() => {
+    console.log(userId);
     if (token) {
       instance
         .post("/getUser", { userId })
@@ -37,7 +38,7 @@ const Profile = () => {
           </div>
           <div className="lg:px-8 py-6 flex pt-28 flex-col gap-6 relative">
             <div className="absolute right-10 top-6">
-              <Link to="/profile/edit">
+              <Link to="/settings/account">
                 <button className="py-2 px-4 rounded-lg text-sm border border-slate-300 active:border-blue-500 active:text-blue-500">
                   Edit Profile
                 </button>

@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import instance from "../axios/axios";
+import Cookies from "js-cookie";
 
 const TweetInput = () => {
   const [value, setValue] = useState("");
   const [token, setToken] = useState(null);
   const textareaRef = useRef(null);
+
+  const userId = Cookies.get("userId");
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -36,13 +39,14 @@ const TweetInput = () => {
 
     await instance.post("/createTweet", {
       userTweet: value,
+      userId,
     });
 
     setValue("");
   };
 
   useEffect(() => {
-    setToken(localStorage.getItem("userToken"));
+    setToken(Cookies.get("userToken"));
   }, []);
 
   return (

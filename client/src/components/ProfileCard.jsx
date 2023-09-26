@@ -1,6 +1,23 @@
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import instance from "../axios/axios";
 
 const ProfileCard = () => {
+  const [token] = useState(Cookies.get("userToken"));
+
+  const userId = Cookies.get("userId");
+  const [user, setUser] = useState();
+
+  // make it reusable
+  useEffect(() => {
+    if (token) {
+      instance
+        .post("/getUser", { userId })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, [token, userId]);
   return (
     <div className="dark:bg-secondary-bg bg-white-secondary max-w-[360px] w-[300px] rounded-md  flex flex-col items-center md:block max-md:hidden">
       <div className="h-20 w-full relative mb-8">
@@ -13,10 +30,10 @@ const ProfileCard = () => {
       </div>
       <div>
         <article className="text-center flex flex-col gap-1 lg:px-8 py-6">
-          <h1 className="text-xl lg:text-2xl font-medium">Yeremias NJ</h1>
-          <p className="text-[#788694] text-sm lg:text-base">@notojoyoo</p>
+          <h1 className="text-xl lg:text-2xl font-medium">{user?.fname}</h1>
+          <p className="text-[#788694] text-sm lg:text-base">{`@${user?.username}`}</p>
           <p className="dark:text-[#dae1e7] text-slate-600 text-sm lg:text-base">
-            Penting gak Pentig yang penting Posting✨
+            undefined
           </p>
         </article>
         <div className="flex justify-around items-center border-y-[1px] p-4 dark:border-[#1d313e]">

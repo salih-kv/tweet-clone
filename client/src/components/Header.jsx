@@ -5,15 +5,31 @@ import { CgProfile } from "react-icons/cg";
 import { GoHomeFill, GoTriangleDown } from "react-icons/go";
 import { LuMessagesSquare } from "react-icons/lu";
 import { MdNotifications } from "react-icons/md";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LoginContext from "../context/LoginContext";
 import { DarkThemeToggle } from "./DarkThemeToggle";
+import Cookies from "js-cookie";
+import instance from "../axios/axios";
 
 const Header = () => {
   const [dropdownToggle, setDropdownToggle] = useState(false);
   const { setLoggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
+
+  const [token] = useState(Cookies.get("userToken"));
+
+  const userId = Cookies.get("userId");
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    if (token) {
+      instance
+        .post("/getUser", { userId })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, [token, userId]);
 
   return (
     <header className="bg-white dark:bg-primary-bg flex justify-between items-center text-2xl py-4 px-2 mb-2 sticky top-0 z-50">
@@ -44,7 +60,7 @@ const Header = () => {
           <div className="sm:dark:bg-[#2A3843] p-2 rounded-3xl flex items-center gap-2 relative border">
             <Link to="/profile" className="sm:flex items-center gap-2">
               <CgProfile />
-              <span className="text-sm sm:block hidden">Yeremias NJ</span>
+              <span className="text-sm sm:block hidden">{user?.fname}</span>
             </Link>
             <button
               onClick={() => {
@@ -60,7 +76,7 @@ const Header = () => {
                   role="menu"
                 >
                   <div className="p-2">
-                    <Link to="/profile/edit">
+                    <Link to="/settings/account">
                       <p className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300">
                         Edit Profile
                       </p>
@@ -73,7 +89,8 @@ const Header = () => {
                       className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50 dark:text-red-500 dark:hover:bg-red-600/10"
                       role="menuitem"
                       onClick={() => {
-                        localStorage.removeItem("userToken");
+                        Cookies.remove("userToken");
+                        Cookies.remove("userId");
                         setLoggedIn((prev) => ({ ...prev, token: false }));
                         navigate("/login");
                       }}

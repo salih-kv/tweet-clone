@@ -1,6 +1,7 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
-const token = localStorage.getItem("userToken");
+const token = Cookies.get("userToken");
 
 const instance = axios.create({
   baseURL: "http://localhost:3000",

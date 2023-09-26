@@ -15,7 +15,7 @@ const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
   const [errorMsg, setErrorMsg] = useState();
 
-  const [token] = useState(localStorage.getItem("userToken"));
+  const [token] = useState(Cookies.get("userToken"));
   const [show, setShow] = useState(false);
 
   const userSchema = yup.object({
@@ -42,7 +42,8 @@ const Login = () => {
           token: true,
           data: response.data.data,
         }));
-      response && localStorage.setItem("userToken", response.data.data.token);
+
+      response && Cookies.set("userToken", response.data.data.token);
       response &&
         Cookies.set("userId", response.data.data.userId, { expires: 7 });
 

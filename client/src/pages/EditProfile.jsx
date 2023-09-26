@@ -1,21 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import { BsChevronRight } from "react-icons/bs";
-import { BiSolidHide, BiShowAlt } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import instance from "../axios/axios.js";
 
 import { Button } from "../components/Button.jsx";
-import Header from "../components/Header.jsx";
 import { InputError } from "../components/InputError.jsx";
 import { InputField } from "../components/InputField.jsx";
 
 const EditProfile = () => {
   // const navigate = useNavigate();
-  const [token] = useState(localStorage.getItem("userToken"));
+  const [token] = useState(Cookies.get("userToken"));
 
   // const [show, setShow] = useState(false);
   const userId = Cookies.get("userId");
@@ -29,66 +25,47 @@ const EditProfile = () => {
     // password: yup.string().min(4).max(12).required("Please Enter password"),
   });
 
-  const { register, handleSubmit,  formState: { errors }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     resolver: yupResolver(userSchema),
     defaultValues: user,
   });
 
-  const getUserProfile=()=>{
+  const getUserProfile = useCallback(() => {
     instance
-        .post("/getUser", { userId })
-        .then((res) => {setUser(res.data); reset(res.data)})
-        .catch((err) => console.log(err));
-  }
+      .post("/getUser", { userId })
+      .then((res) => {
+        setUser(res.data);
+        reset(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [userId, reset]);
 
   const formSubmit = async (data, e) => {
     e.preventDefault();
     console.log("submitted");
     try {
-      let response = await instance.post(`/updateUser/${userId}`, data);      
-      response && getUserProfile()
+      let response = await instance.post(`/updateUser/${userId}`, data);
+      response && getUserProfile();
     } catch (err) {
       console.log("Error: ", err.message);
     }
   };
 
-
-
   useEffect(() => {
     if (token) {
-      getUserProfile()
+      getUserProfile();
     }
-  }, [token,  userId]);
+  }, [token, getUserProfile]);
 
   return (
     <div className="dark:bg-primary-bg dark:text-white bg-lightPrimary">
       <div className="max-w-6xl m-auto">
-        <Header />
         <section className="flex gap-24 mt-8">
-          {/* Left Nav */}
-          <div className="w-[500px]  h-screen">
-            <ul className="list-none flex flex-col gap-2 border-r dark:border-secondary-bg">
-              <li className="border-b  dark:border-secondary-bg border-b-gray-200 py-6  shadow-sm flex items-center justify-between">
-                Account Settings{" "}
-                <span>
-                  <BsChevronRight className="font-bold mr-4" />
-                </span>
-              </li>
-              <li className="border-b  dark:border-secondary-bg border-b-gray-200 py-6  shadow-sm flex items-center justify-between">
-                Security{" "}
-                <span>
-                  <BsChevronRight className="font-bold mr-4" />
-                </span>
-              </li>
-              <li className="py-6  shadow-sm flex items-center justify-between">
-                Notification{" "}
-                <span>
-                  <BsChevronRight className="font-bold mr-4" />
-                </span>
-              </li>
-            </ul>
-          </div>
-          {/* Right */}
           <div className=" dark:text-gray-500 w-full min-h-screen flex justify-between">
             <div className="w-full  px-2 flex flex-col max-md:items-center gap-12">
               <article>
