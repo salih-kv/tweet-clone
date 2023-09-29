@@ -44,7 +44,7 @@ app.post("/deleteUser/:userId", deleteUser);
 
 // ~------------------------------------------------- tweet
 app.post("/createTweet", verifyToken, createNewTweet);
-app.get("/getTweets", verifyToken, getTweets);
+app.post("/getTweets/:userId", verifyToken, getTweets);
 app.post("/deleteTweet", verifyToken, deleteTweet);
 
 // ~------------------------------------------------- File upload

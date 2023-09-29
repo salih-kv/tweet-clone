@@ -51,7 +51,7 @@ const TweetInput = () => {
 
   return (
     <>
-      <div className="dark:bg-secondary-bg bg-white-secondary  h-auto rounded-t-md  dark:border-primary-bg border-[.5px] border-t-0 p-4 flex gap-2">
+      <div className="dark:bg-secondary-bg bg-white-secondary  h-auto rounded-t-md  dark:border-primary-bg border-y-[.5px] border-t-0 p-4 flex gap-2">
         <div>
           <CgProfile className="w-8 h-8 md:w-12 md:h-12" />
         </div>

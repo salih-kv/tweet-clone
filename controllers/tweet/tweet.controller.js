@@ -14,9 +14,10 @@ export const createNewTweet = async (req, res, next) => {
 };
 
 export const getTweets = async (req, res, next) => {
-  const { userId } = req.body;
+  const userId = req.params;
+
   try {
-    const currentUserTweets = await Tweets.find({ userId });
+    const currentUserTweets = await Tweets.find(userId);
     // logic to fetch posts of all followers or all posts
 
     res.status(200).json({

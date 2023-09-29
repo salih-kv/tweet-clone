@@ -18,12 +18,14 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    instance
-      .get("/getTweets", { userId })
-      .then((res) => setTweets([...res.data.data]))
-      .catch((err) => console.log(err));
+    // ! create a new endpoint to fetch all tweets
+
+    // instance
+    //   .post("/getTweets")
+    //   .then((res) => setTweets([...res.data.data]))
+    //   .catch((err) => console.log(err));
     !loggedIn.token && navigate("/login");
-  }, [token, loggedIn, setLoggedIn, navigate, userId]);
+  }, [token, loggedIn, setLoggedIn, navigate, userId, tweets]);
 
   return (
     <div className="dark:bg-primary-bg dark:text-off-white text-black-500 w-full min-h-screen px-2 pb-4 md:px-8 ">
@@ -36,7 +38,7 @@ const Home = () => {
           <div className="w-full flex flex-col">
             <TweetInput />
             {tweets?.map((tweet) => (
-              <Tweet content={tweet.userTweet} key={tweet._id} />
+              <Tweet tweet={tweet} key={tweet._id} />
             ))}
           </div>
         </main>

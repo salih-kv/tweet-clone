@@ -26,14 +26,20 @@ const ProfileCard = () => {
           src="https://template.canva.com/EAENvp21inc/1/0/1600w-qt_TMRJF4m0.jpg"
           alt=""
         />
-        <div className=" w-20 h-20 bg-blue-300 rounded-full absolute left-0 right-0 m-auto -bottom-10"></div>
+        <div className=" w-20 h-20 bg-blue-300 rounded-full absolute left-0 right-0 m-auto -bottom-10">
+          <img
+            src={user?.avatar}
+            alt=""
+            className="rounded-full object-cover"
+          />
+        </div>
       </div>
       <div>
         <article className="text-center flex flex-col gap-1 lg:px-8 py-6">
           <h1 className="text-xl lg:text-2xl font-medium">{user?.fname}</h1>
           <p className="text-[#788694] text-sm lg:text-base">{`@${user?.username}`}</p>
           <p className="dark:text-[#dae1e7] text-slate-600 text-sm lg:text-base">
-            undefined
+            {user?.bio}
           </p>
         </article>
         <div className="flex justify-around items-center border-y-[1px] p-4 dark:border-[#1d313e]">
