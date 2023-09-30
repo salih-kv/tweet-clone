@@ -48,17 +48,16 @@ export const deleteTweet = async (req, res, next) => {
 
 // like/dislike a tweet
 export const likeTweet = async (req, res, next) => {
-  const tweetId = req.params.id;
-  const { userId } = req.body;
+  const { tweetId, userId } = req.body;
 
   try {
     const tweet = await Tweets.findById(tweetId);
     if (!tweet.likes.includes(userId)) {
       await tweet.updateOne({ $push: { likes: userId } });
-      res.status(200).json("Tweet liked");
+      res.status(200).json(tweet);
     } else {
       await tweet.updateOne({ $pull: { likes: userId } });
-      res.status(200).json("Tweet Unliked");
+      res.status(200).json(tweet);
     }
   } catch (err) {
     next(err);

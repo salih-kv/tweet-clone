@@ -1,10 +1,25 @@
+import { useEffect, useState } from "react";
 import { AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { FaRetweet } from "react-icons/fa";
 import { IoIosShare } from "react-icons/io";
+import instance from "../axios/axios";
+import Cookies from "js-cookie";
 
 export const Tweet = ({ tweet }) => {
+  const [likes, setLikes] = useState(tweet.likes.length);
+
+  const userId = Cookies.get("userId");
+
+  const handleClick = (Icon) => {
+    if (Icon === AiOutlineHeart) {
+      instance
+        .post("/likeTweet", { userId, tweetId: tweet._id })
+        .then((res) => setLikes(res.data.likes.length));
+    }
+  };
+
   const icons = [
-    { Icon: AiOutlineHeart, label: "Like" },
+    { Icon: AiOutlineHeart, label: likes },
     { Icon: FaRetweet, label: "Retweet" },
     { Icon: AiOutlineComment, label: "Comment" },
   ];
@@ -45,6 +60,9 @@ export const Tweet = ({ tweet }) => {
           {icons.map(({ Icon, label }) => (
             <button
               key={label}
+              onClick={() => {
+                handleClick(Icon);
+              }}
               className={`text-2xl rounded-lg flex items-center justify-center gap-2 py-3 w-full border dark:border-secondary-bg dark:hover:border-blue-500 hover:border-blue-500 dark:bg-tertiary-bg dark:text-white`}
             >
               <Icon /> <span className="text-sm hidden md:flex">{label}</span>

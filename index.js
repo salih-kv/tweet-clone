@@ -13,6 +13,7 @@ import {
   createNewTweet,
   getTweets,
   deleteTweet,
+  likeTweet,
 } from "./controllers/tweet/tweet.controller.js";
 import {
   uploadProfile,
@@ -46,6 +47,7 @@ app.post("/deleteUser/:userId", deleteUser);
 app.post("/createTweet", verifyToken, createNewTweet);
 app.post("/getTweets/:userId", verifyToken, getTweets);
 app.post("/deleteTweet", verifyToken, deleteTweet);
+app.post("/likeTweet", likeTweet)
 
 // ~------------------------------------------------- File upload
 app.post("/uploads",verifyToken, uploadProfile);
