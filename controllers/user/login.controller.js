@@ -15,7 +15,7 @@ export const loginUser = async (req, res, next) => {
   try {
     const validUser = await Users.findOne({ username: username });
 
-    if (!validUser) return next(errorHandler(404, "User not found"));
+    if (!validUser) return next(errorHandler(404,"User not found"));
 
     let validPassword = await bcrypt.compare(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, "wrong credentials"));

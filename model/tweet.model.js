@@ -1,11 +1,12 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from 'uuid'
 
 const tweetSchema = Schema(
   {
     _id: {
       type: String,
-      default: () => nanoid(),
+      default: () => uuidv4().slice(0,6),
     },
     userId: { type: String, required: true },
     userTweet: {
