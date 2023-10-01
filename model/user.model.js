@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model,ObjectId } from "mongoose";
 import { nanoid } from "nanoid";
 
 const userSchema = Schema({
@@ -31,6 +31,17 @@ const userSchema = Schema({
     type: String,
     default: "Hi👋 Welcome To My Profile",
   },
+
+  followers: [{
+    type: ObjectId,
+    ref: 'Users'
+  }],
+
+  following: [{
+    type: ObjectId,
+    ref: 'Users'
+  }]
+
 });
 
 const Users = model("Users", userSchema);

@@ -8,6 +8,8 @@ import {
   deleteUser,
   getUser,
   updateUser,
+  followUser,
+  unfollowUser 
 } from "./controllers/user/user.controller.js";
 import {
   createNewTweet,
@@ -42,10 +44,12 @@ app.post("/verifyUser", verifyUser)
 app.post("/getUser", verifyToken, getUser);
 app.post("/updateUser/:userId", updateUser);
 app.post("/deleteUser/:userId", deleteUser);
-
+app.post("/followUser", followUser);
+app.post("/unfollowUser", unfollowUser);
 // ~------------------------------------------------- tweet
 app.post("/createTweet", verifyToken, createNewTweet);
-app.post("/getTweets/:userId", verifyToken, getTweets);
+//app.post("/getTweets/:userId", verifyToken, getTweets);
+app.post("/getTweets", getTweets);
 app.post("/deleteTweet", verifyToken, deleteTweet);
 app.post("/likeTweet", likeTweet)
 
