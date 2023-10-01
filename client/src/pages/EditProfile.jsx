@@ -8,6 +8,7 @@ import instance from "../axios/axios.js";
 import { Button } from "../components/Button.jsx";
 import { InputError } from "../components/InputError.jsx";
 import { InputField } from "../components/InputField.jsx";
+import { ToastContainer, toast } from "react-toastify";
 
 const EditProfile = () => {
   // const navigate = useNavigate();
@@ -50,9 +51,12 @@ const EditProfile = () => {
     console.log("submitted");
     try {
       let response = await instance.post(`/updateUser/${userId}`, data);
+      toast(response.data.message, { icon: true });
       response && getUserProfile();
-    } catch (err) {
-      console.log("Error: ", err.message);
+
+    } catch (error) {
+      console.log("Error: ", error.message);
+      toast.error(error.response.data.message, { icon: true });
     }
   };
 
@@ -164,6 +168,20 @@ const EditProfile = () => {
           </div>
         </section>
       </div>
+      <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+
+            <ToastContainer />
     </div>
   );
 };

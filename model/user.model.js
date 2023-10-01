@@ -1,10 +1,11 @@
 import { Schema, model,ObjectId } from "mongoose";
 import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from 'uuid'
 
 const userSchema = Schema({
   userId: {
     type: String,
-    default: () => nanoid(5),
+    default: () => uuidv4(),
   },
   fname: {
     type: String,
