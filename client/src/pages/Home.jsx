@@ -20,10 +20,10 @@ const Home = () => {
   useEffect(() => {
     // ! create a new endpoint to fetch all tweets
 
-    // instance
-    //   .post("/getTweets")
-    //   .then((res) => setTweets([...res.data.data]))
-    //   .catch((err) => console.log(err));
+    instance
+      .post("/getTweets",{"userId":userId})
+      .then((res) => setTweets([...res.data]))
+      .catch((err) => console.log(err));
     !loggedIn.token && navigate("/login");
   }, [token, loggedIn, setLoggedIn, navigate, userId, tweets]);
 

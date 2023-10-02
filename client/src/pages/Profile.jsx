@@ -20,8 +20,8 @@ const Profile = () => {
         .catch((err) => console.log(err));
 
       instance
-        .post(`/getTweets/${userId}`)
-        .then((res) => setTweets([...res.data.data]))
+        .post("/getTweets",{userId:userId,forProfile:true})
+        .then((res) => setTweets([...res.data]))
         .catch((err) => console.log(err));
     }
   }, [token, userId]);

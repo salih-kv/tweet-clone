@@ -51,15 +51,20 @@ export const getTweets = async (req, res,next) => {
   //console.log("tweets",tweets)
   // Map tweets to response
   const mappedTweets = tweets.map(tweet => {
+   // console.log(tweet,"tweet")
     return {
       id: tweet._id,
       text: tweet.userTweet, 
-      user: tweet.fname,
+      firstname: tweet.userId.fname,
+      lastname: tweet.userId.lname,
       likes: tweet.likes,
-      comments: tweet.comments
+      avatar:tweet.userId.avatar,
+      comments: [],
+      createdAt:tweet.createdAt,
+      updatetedAt:tweet.updatedAt
     }
   });
-
+ // console.log(mappedTweets,"mappedTweets")
   res.json(mappedTweets);
 }catch(err){
   // console.log(err,"error new")
