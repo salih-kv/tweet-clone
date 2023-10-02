@@ -48,7 +48,7 @@ app.post("/followUser", followUser);
 app.post("/unfollowUser", unfollowUser);
 // ~------------------------------------------------- tweet
 app.post("/createTweet", verifyToken, createNewTweet);
-//app.post("/getTweets/:userId", verifyToken, getTweets);
+// app.post("/getTweets/:userId", verifyToken, getTweets);
 app.post("/getTweets", getTweets);
 app.post("/deleteTweet", verifyToken, deleteTweet);
 app.post("/likeTweet", likeTweet)

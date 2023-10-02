@@ -39,7 +39,7 @@ const userSchema = Schema({
   }],
 
   following: [{
-    type: ObjectId,
+    type: String,
     ref: 'Users'
   }]
 

@@ -31,10 +31,10 @@ export const createNewTweet = async (req, res, next) => {
 //   }
 // };
 
-export const getTweets = async (req, res) => {
+export const getTweets = async (req, res,next) => {
   
-  const { userId } = req.body;
-
+  const { userId,forProfile } = req.body;
+  try {
   // Validate user id
   if(!userId) {
     return res.status(400).send('User ID required');
@@ -47,46 +47,75 @@ export const getTweets = async (req, res) => {
   }
 
   // Get tweets from user and followers 
-  const tweets = await Tweets.getFeed(userId); 
-  
+  const tweets = await Tweets.getFeed(userId,forProfile); 
+  //console.log("tweets",tweets)
   // Map tweets to response
   const mappedTweets = tweets.map(tweet => {
     return {
       id: tweet._id,
-      text: tweet.text, 
-      user: tweet.user.name,
-      likes: tweet.likes.length,
-      comments: tweet.comments.length
+      text: tweet.userTweet, 
+      user: tweet.fname,
+      likes: tweet.likes,
+      comments: tweet.comments
     }
   });
 
   res.json(mappedTweets);
+}catch(err){
+  // console.log(err,"error new")
+  res.json({
+    status:false,
+    message:err
+  })
+}
 }
 // Tweet model method 
-Tweets.getFeed = async function(userId) {
-
-  // Get user and followers
-  const user = await this.populate(userId, 'followers');
-
-  // Query tweets 
-  const query = {
+Tweets.getFeed = async function(userId,forProfile) {
+try{
+// Get user and followers
+const user = await Users.findOne({userId}).populate('followers');
+// console.log(user,"user 1")
+// console.log(forProfile,"forProfile ")
+ // Query tweets 
+ let query;
+ if(!forProfile){
+   query = {
     $or: [
-      {user: userId}, 
-      {user: {$in: (user.following || []).map(id => id)}}
+     { userId: user.userId }, // Tweets by the user
+     {userId: {$in: user.following || []}}   , // Tweets by users they are following
     ]
   };
+  // console.log(query,"1st query")  
 
-  return this.find(query)
-    .populate('fname', 'lname', 'username', 'avatar')
-    .populate({
-      path: 'likes',
-      select: 'count'  
-    })
-    .populate({
-      path: 'comments', 
-      select: 'count'
-    })
-    .sort({createdAt: -1});
+ }else{
+  query = { userId:user.userId };
+  // console.log(query,"2nd query")  
+ }
+ 
+// const query = { userId:user.userId };
+//  console.log(query,"user query")  
+
+ return this.find(query)
+   .populate({
+    path: 'userId',
+    select: 'fname lname username avatar',
+  foreignField: 'userId' // match on this field in User model
+  })
+   .populate({
+     path: 'likes',
+     select: 'count'  
+   })
+   .populate({
+     path: 'comments', 
+     select: 'count'
+   })
+   .sort({createdAt: -1});
+
+}catch(err){
+
+  // console.log(err,"error")
+}
+  
 
 }
 
@@ -114,7 +143,7 @@ export const likeTweet = async (req, res, next) => {
     const tweet = await Tweets.findById(tweetId);
     if (!tweet.likes.includes(userId)) {
       await tweet.updateOne({ $push: { likes: userId } });
-     let newtweet= await Tweets.findById(tweetId);
+      
       res.status(200).json(newtweet);
     } else {
       await tweet.updateOne({ $pull: { likes: userId } });
