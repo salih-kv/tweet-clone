@@ -14,13 +14,23 @@ import instance from "../axios/axios";
 const Header = () => {
   const [dropdownToggle, setDropdownToggle] = useState(false);
   const { setLoggedIn } = useContext(LoginContext);
-
   const navigate = useNavigate();
-
   const [token] = useState(Cookies.get("userToken"));
-
   const userId = Cookies.get("userId");
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // State for the search input value
+  const [searchResults, setSearchResults] = useState([]); // State to store search results
+
+  const searchSubmit = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    try {
+      const response = await instance.get(`/searchUser/${searchQuery}`);
+      setSearchResults((prev) => [...prev, response.data]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (token) {
@@ -34,10 +44,29 @@ const Header = () => {
   return (
     <header className="bg-white dark:bg-primary-bg flex justify-between items-center text-2xl py-4 px-2 mb-2 sticky top-0 z-50">
       {/* left */}
-      <div>
+      <div className="flex justify-start items-center gap-4 relative">
         <Link to="/">
           <BsTwitter className="text-3xl text-[#1DA1F2]" />
         </Link>
+        <form onSubmit={searchSubmit}>
+          <input
+            type="text"
+            className="rounded-xl w-60 bg-gray-50 dark:bg-secondary-bg text-base px-4 py-2 outline-none border dark:border-none"
+            placeholder="# Explore"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </form>
+        {searchResults.length > 0 && (
+          <div className="absolute right-0 top-10 z-10">
+            <div
+              className=" end-0 mt-2 w-60 text-sm divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg dark:divide-gray-800 dark:border-gray-800 dark:bg-secondary-bg"
+              role="menu"
+            >
+              <div className="p-2">{/* search result display here */}</div>
+            </div>
+          </div>
+        )}
       </div>
       {/* right */}
       <div className="flex items-center sm:gap-8 gap-4">
@@ -57,7 +86,7 @@ const Header = () => {
           <DarkThemeToggle />
         </div>
         <div className="flex items-center gap-4 sm:gap-8 sm:pl-4 sm:border-l-2 sm:border-[#14222B]">
-          <div className="sm:dark:bg-[#2A3843] p-2 rounded-3xl flex items-center gap-2 relative border">
+          <div className="sm:dark:bg-[#2A3843] bg-gray-50 p-2 rounded-3xl flex items-center gap-2 relative border">
             <Link to="/profile" className="sm:flex items-center gap-2">
               <CgProfile />
               <span className="text-sm sm:block hidden">{user?.fname}</span>

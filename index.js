@@ -9,7 +9,8 @@ import {
   getUser,
   updateUser,
   followUser,
-  unfollowUser 
+  unfollowUser, 
+  searchUser
 } from "./controllers/user/user.controller.js";
 import {
   createNewTweet,
@@ -46,6 +47,7 @@ app.post("/updateUser/:userId", updateUser);
 app.post("/deleteUser/:userId", deleteUser);
 app.post("/followUser", followUser);
 app.post("/unfollowUser", unfollowUser);
+app.get("/searchUser/:username", searchUser)
 // ~------------------------------------------------- tweet
 app.post("/createTweet", verifyToken, createNewTweet);
 // app.post("/getTweets/:userId", verifyToken, getTweets);

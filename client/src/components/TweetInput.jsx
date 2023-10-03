@@ -51,7 +51,7 @@ const TweetInput = () => {
 
   return (
     <>
-      <div className="dark:bg-secondary-bg bg-white-secondary  h-auto rounded-t-md  dark:border-primary-bg border-y-[.5px] border-t-0 p-4 flex gap-2">
+      <div className="dark:bg-secondary-bg bg-white-secondary  h-auto rounded-t-2xl  dark:border-primary-bg border-y-[.5px] border-t-0 p-4 flex gap-2">
         <div>
           <CgProfile className="w-8 h-8 md:w-12 md:h-12" />
         </div>
@@ -62,7 +62,7 @@ const TweetInput = () => {
             value={value}
             onChange={handleChange}
             placeholder="What's happening?"
-            className="resize-none p-3 mb-3 rounded-lg w-full bg-off-white dark:bg-tertiary-bg dark:text-white border  border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none"
+            className="resize-none p-3 mb-3 rounded-lg w-full bg-gray-50 dark:bg-tertiary-bg dark:text-white border  border-gray-300 dark:border-gray-700 placeholder:text-sm placeholder:text-gray-500 outline-none"
           />{" "}
           <div className="flex">
             <button

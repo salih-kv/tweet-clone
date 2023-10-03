@@ -60,15 +60,17 @@ const Profile = () => {
             <article className=" flex flex-col gap-1">
               <h1 className="text-xl lg:text-2xl font-medium">{user?.fname}</h1>
               <p className="text-[#788694] text-sm lg:text-base">{`@${user?.username}`}</p>
-              <p className="dark:text-[#dae1e7] text-slate-600 text-sm lg:text-base">{user?.bio}</p>
+              <p className="dark:text-[#dae1e7] text-slate-600 text-sm lg:text-base">
+                {user?.bio}
+              </p>
             </article>
             <div className="flex gap-6">
               <div className="flex gap-2">
-                <h6>6,664</h6>
+                <h6>{user?.following.length}</h6>
                 <p className="text-[#788694]">Following</p>
               </div>
               <div className="flex gap-2">
-                <h6>9,991</h6>
+                <h6>{user?.followers.length}</h6>
                 <p className="text-[#788694]">Followers</p>
               </div>
             </div>
@@ -91,7 +93,7 @@ const Profile = () => {
         </div>
         <div>
           {toggleState === 1 &&
-            tweets.map((tweet) => <Tweet tweet={tweet} key={tweet._id} />)}
+            tweets?.map((tweet) => <Tweet tweet={tweet} key={tweet._id} /> )}
           {toggleState === 2 && (
             <p className="text-center mt-16 text-slate-600">
               Your Retweets will show up here
