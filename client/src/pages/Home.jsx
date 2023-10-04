@@ -21,11 +21,11 @@ const Home = () => {
     // ! create a new endpoint to fetch all tweets
 
     instance
-      .post("/getTweets",{"userId":userId})
+      .post("/getTweets", { userId: userId })
       .then((res) => setTweets([...res.data]))
       .catch((err) => console.log(err));
     !loggedIn.token && navigate("/login");
-  }, [token, loggedIn, setLoggedIn, navigate, userId, tweets]);
+  }, [loggedIn, navigate, userId]);
 
   return (
     <div className="dark:bg-primary-bg dark:text-off-white text-black-500 w-full min-h-screen px-2 pb-4 md:px-8 ">
