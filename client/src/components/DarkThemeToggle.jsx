@@ -25,13 +25,9 @@ export const DarkThemeToggle = () => {
   };
 
   return (
-    <div className="absolute right-4 bottom-4 bg-[#151C24] dark:bg-white rounded-lg">
-      <button className="p-2" id="toggleDark" onClick={toggleDarkMode}>
-        {theme === "light" ? (
-          <MdLightMode className="text-white" />
-        ) : (
-          <MdDarkMode className="text-white dark:text-black" />
-        )}
+    <div className="flex justify-center  items-center">
+      <button className="" id="toggleDark" onClick={toggleDarkMode}>
+        {theme === "light" ? <MdLightMode /> : <MdDarkMode />}
       </button>
     </div>
   );

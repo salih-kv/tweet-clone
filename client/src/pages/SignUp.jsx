@@ -1,47 +1,88 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import instance from "../axios/axios";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { BsTwitter } from "react-icons/bs";
+
+import { InputField } from "../components/InputField";
+import { InputError } from "../components/InputError";
+import { BiSolidHide, BiShowAlt } from "react-icons/bi";
 import { useState } from "react";
-import { Input } from "../components/Input.jsx";
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    fname: "",
-    lname: "",
-    username: "",
-    password: "",
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  // form validation
+  const userSchema = yup.object().shape({
+    fname: yup.string().required("Please Enter First Name"),
+    lname: yup.string().required("Please Enter Last Name"),
+    username: yup
+      .string()
+      .required("Please Enter Username")
+      .min(6, "Username must be at least 6 characters")
+      .matches(/^[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]$/, {
+        message: "Invalid username format",
+        excludeEmptyString: true,
+      })
+      .test(
+        "no-underscore-hyphen-end",
+        "Username cannot end with _ or -",
+        (value) => {
+          if (value && (value.endsWith("_") || value.endsWith("-"))) {
+            return false;
+          }
+          return true;
+        }
+      ),
+    password: yup.string().min(4).max(12).required("Please Enter Password"),
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(userSchema) });
 
-  const handleSubmit = (e) => {
+  const formSubmit = async (data, e) => {
     e.preventDefault();
 
     try {
-      instance
-        .post("/signup", formData)
-        .then()
-        .catch((err) => console.log(err));
+      await instance.post("/signup", data);
+      data && navigate("/login");
     } catch (err) {
       console.log("Error: ", err.message);
     }
   };
 
   return (
-    <div className="dark:bg-[#151C24] w-full min-h-screen flex justify-between items-center">
-      <div className="bg-[#212B35] w-[500px] h-screen hidden lg:block"></div>
+    <div className="dark:bg-primary-bg dark:text-white w-full min-h-screen flex justify-between items-center">
+      <div className=" w-[600px] max-lg:hidden lg:block px-4">
+        <div
+          className="dark:bg-secondary-bg flex flex-col items-center justify-center shadow rounded-lg p-8 relative"
+          style={{ height: "calc(100vh - 2rem)" }}
+        >
+          <div className="absolute top-3 left-8">
+            <Link to="/">
+              <BsTwitter className="text-3xl text-blue-500" />
+            </Link>
+          </div>
+          <h1 className="text-3xl font-bold mb-12 tracking-wide">
+            Get tweeting! Signup up now.
+          </h1>
+          {/* <img src="" alt="illustration_signup" className="w-72" /> */}
+        </div>
+      </div>
       <p className=" dark:text-white absolute right-16 top-8 ">
         Already have an account?{" "}
-        <span className="text-[#01AB55]">
+        <span className="text-blue-500">
           <Link to="/login">Login</Link>
         </span>{" "}
       </p>
       <div className="flex flex-col items-center w-screen">
         <form
           className="flex flex-col gap-4 sm:w-[500px] max-sm:w-10/12"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(formSubmit)}
         >
           <article className="dark:text-white mb-4 self-start">
             <h2 className="font-bold text-2xl mb-2">Create an account</h2>
@@ -50,39 +91,54 @@ const SignUp = () => {
             </p>
           </article>
           <div className="flex gap-4 max-sm:flex-col">
-            <Input
+            <InputField
               type="text"
               placeholder="First name"
               name="fname"
-              value={formData.fname}
-              onChange={handleChange}
+              register={register}
+              error={errors.fname}
             />
-            <Input
+            <InputField
               type="text"
               placeholder="Last name"
               name="lname"
-              value={formData.lname}
-              onChange={handleChange}
+              register={register}
+              error={errors.lname}
             />
           </div>
-          <Input
+          <InputError error={errors.fname || errors.lname} />
+          <InputField
             type="text"
             placeholder="Username"
             name="username"
-            value={formData.username}
-            onChange={handleChange}
+            register={register}
+            error={errors.username}
           />
-          <Input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <button
-            className="bg-[#01AB55] text-white p-3 rounded-lg active:bg-green-500 "
-            type="submit"
-          >
+
+          <InputError error={errors.username} />
+
+          <div className="relative">
+            <InputField
+              placeholder="Password"
+              name="password"
+              register={register}
+              error={errors.password}
+              type={show ? "text" : "password"}
+            />
+            {show ? (
+              <BiShowAlt
+                className="absolute top-4 right-5 text-lg cursor-pointer"
+                onClick={() => setShow((prev) => !prev)}
+              />
+            ) : (
+              <BiSolidHide
+                className="absolute top-4 right-5 text-lg cursor-pointer"
+                onClick={() => setShow((prev) => !prev)}
+              />
+            )}
+            <InputError error={errors.password} />
+          </div>
+          <button className="btn-primary p-3 rounded-lg" type="submit">
             Sign Up
           </button>
           <p className="dark:text-gray-400 text-center text-xs">
