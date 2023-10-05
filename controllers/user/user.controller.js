@@ -89,11 +89,16 @@ export const unfollowUser = async (req, res) => {
 
 // Search user
 export const searchUser = async (req, res, next) => {
+  const searchQuery = req.query.q;
+
+  if (!searchQuery) {
+    return res.json([]);
+  }
   try {
-    const username = req.params.username;
-    const users = await Users.find({ username }).select('username fname avatar')
-    console.log(users);
-    res.json(users);
+    const result = await Users.find({
+      username: { $regex: new RegExp(searchQuery, "i") }, // case-insensitive regex search
+    }).select("username fname avatar");
+    res.json(result);
   } catch (err) {
     next(err);
   }

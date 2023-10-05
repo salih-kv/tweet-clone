@@ -18,8 +18,8 @@ const Header = () => {
   const [token] = useState(Cookies.get("userToken"));
   const userId = Cookies.get("userId");
   const [user, setUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for the search input value
-  const [searchResults, setSearchResults] = useState([]); // State to store search results
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const searchSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +31,18 @@ const Header = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await instance.get(`/searchUser?q=${searchQuery}`);
+        setSearchResults(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUsers();
+  }, [searchQuery]);
 
   useEffect(() => {
     if (token) {
@@ -63,7 +75,11 @@ const Header = () => {
               className=" end-0 mt-2 w-60 text-sm divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg dark:divide-gray-800 dark:border-gray-800 dark:bg-secondary-bg"
               role="menu"
             >
-              <div className="p-2">{/* search result display here */}</div>
+              {searchResults.map((result) => (
+                <div className="p-2" key={result._id}>
+                  {result.username}
+                </div>
+              ))}
             </div>
           </div>
         )}
