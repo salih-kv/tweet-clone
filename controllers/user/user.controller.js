@@ -51,8 +51,8 @@ export const followUser = async (req, res, next) => {
     }
 
     // Add new ObjectId to following and followers arrays
-    follower.following.push(followed._id);
-    followed.followers.push(follower._id);
+    follower.following.push(followed.userId);
+    followed.followers.push(follower.userId);
 
     await follower.save();
     await followed.save();

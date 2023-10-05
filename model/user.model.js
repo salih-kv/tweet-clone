@@ -34,7 +34,7 @@ const userSchema = Schema({
   },
 
   followers: [{
-    type: ObjectId,
+    type: String,
     ref: 'Users'
   }],
 

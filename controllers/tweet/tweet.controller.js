@@ -83,18 +83,18 @@ const user = await Users.findOne({userId}).populate('followers');
 // console.log(forProfile,"forProfile ")
  // Query tweets 
  let query;
- if(!forProfile){
+ if(forProfile=="false"){
    query = {
     $or: [
      { userId: user.userId }, // Tweets by the user
-     {userId: {$in: user.following || []}}   , // Tweets by users they are following
+     {userId: {$in: user.following|| []}}   , // Tweets by users they are following
     ]
   };
-  // console.log(query,"1st query")  
+//   console.log(query,"1st query")  
 
  }else{
   query = { userId:user.userId };
-  // console.log(query,"2nd query")  
+//   console.log(query,"2nd query")  
  }
  
 // const query = { userId:user.userId };
