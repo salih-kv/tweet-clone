@@ -9,7 +9,15 @@ import { Button } from "../components/Button.jsx";
 import { InputError } from "../components/InputError.jsx";
 import { InputField } from "../components/InputField.jsx";
 import { ToastContainer, toast } from "react-toastify";
-
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+} from "firebase/storage";
+import { storage } from "../utils/firebase.js";
+import { v4 } from "uuid";
 const EditProfile = () => {
   // const navigate = useNavigate();
   const [token] = useState(Cookies.get("userToken"));
@@ -17,7 +25,8 @@ const EditProfile = () => {
   // const [show, setShow] = useState(false);
   const userId = Cookies.get("userId");
   const [user, setUser] = useState({});
-
+  const [img, setImg] = useState(undefined);
+  const [imageUrls, setImageUrls] = useState([]);
   // ~ form validation schema
   const userSchema = yup.object({
     fname: yup.string().required("Please Enter First Name"),
@@ -59,7 +68,18 @@ const EditProfile = () => {
       toast.error(error.response.data.message, { icon: true });
     }
   };
-
+  
+  const uploadFile = () => {
+    if (img == null) return;
+    const imageRef = ref(storage, `images/${img + v4()}`);
+    uploadBytes(imageRef, img).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev) => [...prev, url]);
+      });
+    });
+  };
+  //image urls are in state
+  console.log(imageUrls,"imageUrls");
   useEffect(() => {
     if (token) {
       getUserProfile();
@@ -87,7 +107,13 @@ const EditProfile = () => {
                   alt="profile-image"
                 />
                 <div className="flex flex-col gap-4">
-                  <Button variant="fill">Change picture</Button>
+                <input
+            type="file"
+            accept="image/*"
+            id="img"
+            onChange={(e) => setImg((prev) => e.target.files[0])}
+          />
+                  <Button variant="fill" onClick={uploadFile}>Change picture</Button>
                   <Button variant="outlined">Delete picture</Button>
                 </div>
               </div>
